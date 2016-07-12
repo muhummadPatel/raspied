@@ -1,0 +1,45 @@
+{% extends "base_page.html" %}
+
+{% block title_b %} Raspied - Log In {% endblock title_b %}
+
+{% block main_body_b %}
+<div class="container">
+  <div class="row">
+    <div class="col s12 m6 offset-m3">
+      <div class="card white darken-1">
+        <div class="card-content">
+          <span class="card-title">Log In</span>
+
+          {% for error in form.non_field_errors %}
+            <ul class="errorlist">
+              <strong>{{ error | escape }}</strong>
+            </ul>
+          {% endfor %}
+
+          <form id="login_form" method="post" action=".">
+            {% csrf_token %}
+
+            {% for field in form %}
+              <div class="input-field">
+                {{ field.label_tag }} {{ field }}
+                {{ field.errors }}
+
+                {% if field.help_text %}
+                  <p class="help">{{ field.help_text|safe }}</p>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </form>
+          <br />
+          <p class="help">Not registered? <a href="{% url 'students:registration_register' %}">Sign Up</a></p>
+        </div>
+
+        <div class="card-action">
+          <button class="btn orange waves-effect waves-light" form="login_form" type="submit" name="action">Log In<i class="material-icons right">send</i></button>
+          <input type="hidden" name="next" value="{{ next }}" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock main_body_b %}

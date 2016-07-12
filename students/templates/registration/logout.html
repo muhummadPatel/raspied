@@ -1,0 +1,15 @@
+{% extends "base_page.html" %}
+
+{% block title_b %} Raspied - Log Out {% endblock title_b %}
+
+{% block main_body_b %}
+  <div class="container">
+    <div class="row center">
+      <h3>Successfully logged out</h3>
+      <br />
+      <br />
+
+      <a href="{% url 'todo:index' %}" class="btn-large waves-effect waves-light orange">DjangoDo Home</a>
+    </div>
+  </div>
+{% endblock main_body_b %}

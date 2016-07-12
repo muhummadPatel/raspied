@@ -1,8 +1,9 @@
-from django.conf.urls import url
+from django.conf.urls import include, url
 
 from . import views
 
-app_name = "todo"
+app_name = "students"
 urlpatterns = [
-    url(r'^$', views.index, name='students_index'),
+    # TODO: overidden registration urls come before the include below
+    url(r'^accounts/', include('registration.backends.simple.urls')),
 ]
