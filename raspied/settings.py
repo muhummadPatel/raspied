@@ -39,14 +39,15 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
-    'pipeline',
     'students.apps.StudentsConfig',
+    'pipeline',
 ]
 
 MIDDLEWARE_CLASSES = [
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -61,7 +62,9 @@ ROOT_URLCONF = 'raspied.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR,  'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -126,8 +129,43 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 STATICFILES_STORAGE = 'raspied.storage.GzipManifestPipelineStorage'
 PIPELINE = {
-    'STYLESHEETS': {},
-    'JAVASCRIPT': {},
+    # NOTE: have to use a no-op js compressor otherwise it throws errors from
+    # jquery. May be able to actually compress the js with a different
+    # compressor or a different version of jquery.
+    'JS_COMPRESSOR': 'pipeline.compressors.NoopCompressor',
+    'STYLESHEETS': {
+        'libs_css': {
+            'source_filenames': (
+              'raspied/bower_components/Materialize/dist/css/materialize.css',
+            ),
+            'output_filename': 'css/libs_css.min.css',
+        },
+        'custom_css': {
+            'source_filenames': (
+              'raspied/css/custom.css',
+            ),
+            'output_filename': 'css/custom_css.min.css',
+        },
+    },
+    'JAVASCRIPT': {
+        'libs_js': {
+            'source_filenames': (
+                'raspied/bower_components/jquery/dist/jquery.js',
+                'raspied/bower_components/Materialize/dist/js/materialize.js',
+                'raspied/bower_components/js-cookie/src/js.cookie.js',
+            ),
+            'output_filename': 'js/libs_js.min.js',
+        },
+        'init_js': {
+            'source_filenames': (
+                'raspied/js/init.js',
+            ),
+            'output_filename': 'js/init_js.min.js',
+        },
+    },
 }
