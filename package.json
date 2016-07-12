@@ -1,0 +1,17 @@
+{
+  "name": "raspied",
+  "version": "0.1.0",
+  "description": "Supporting web app for educational Raspberry-Pi robot CS Honours project.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muhummadPatel/raspied.git"
+  },
+  "author": "Muhummad Patel",
+  "license": "MIT",
+  "dependencies": {
+    "bower": "1.7.9"
+  },
+  "scripts": {
+    "postinstall": "./node_modules/bower/bin/bower install"
+  }
+}
