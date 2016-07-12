@@ -1,0 +1,64 @@
+/* Custom Stylesheet */
+
+.collection .collection-item:last-child {
+   border-bottom: 1px solid #e0e0e0;
+}
+
+.collection .collection-item.active {
+  background-color: #ffe0b2;
+  color: #009688;
+}
+
+.collection .collection-item.active .secondary-content {
+  color: #009688;
+}
+
+.collection-item label {
+  color: #039be5;
+}
+
+div .switch {
+  float: right;
+  padding-top: 1.5rem;
+}
+
+.icon-block {
+  padding: 0 15px;
+}
+
+.icon-block .material-icons {
+	font-size: inherit;
+}
+
+.errorlist {
+  color: red;
+  font-size: x-small;
+  margin-bottom: 0;
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.input-field {
+  margin-bottom: 0;
+  margin-top: 1.5rem;
+}
+
+.input-field input {
+  margin-bottom: 0;
+}
+
+p.help {
+  font-size: x-small;
+  margin-top: 0;
+  padding-top: 0;
+}
+
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+}
