@@ -1,0 +1,31 @@
+{% extends "admin/base_site.html" %}
+
+{% block bodyclass %}
+  {{ opts.app_label }}-{{ opts.object_name.lower }} change-form
+{% endblock %}
+
+{% block breadcrumbs %}
+  {% if not is_popup %}
+    <div class="breadcrumbs">
+      <a href="../../../">Home</a> ›
+      <a href="../../">{{ opts.app_label|capfirst|escape }}</a> ›
+      <a href="../">{{ opts.verbose_name_plural|capfirst }}</a> ›
+      Add {{ opts.verbose_name_plural }}
+    </div>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  <form action="." method="post">
+    {% csrf_token %}
+
+    <fieldset class="module">
+      <label>Please upload a file containing the usernames to add</label><br/>
+      <input type="file" name="list" accept="text/*">
+    </fieldset>
+
+    <div class="submit-row" style="float:left;">
+      <input class="default" type="submit" value="Add Whitelisted Usernames">
+    </div>
+  </form>
+{% endblock %}
