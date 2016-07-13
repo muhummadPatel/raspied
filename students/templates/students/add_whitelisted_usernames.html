@@ -16,12 +16,18 @@
 {% endblock %}
 
 {% block content %}
-  <form action="." method="post">
+  {% if form_message %}
+    <p style="color:red;">
+      {{ form_message }}
+    </p>
+  {% endif %}
+
+  <form action="." method="post"  enctype="multipart/form-data">
     {% csrf_token %}
 
     <fieldset class="module">
       <label>Please upload a file containing the usernames to add</label><br/>
-      <input type="file" name="list" accept="text/*">
+      <input type="file" name="uploaded_file" accept="text/*">
     </fieldset>
 
     <div class="submit-row" style="float:left;">

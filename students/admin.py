@@ -10,12 +10,11 @@ class WhitelistedUsernameAdmin(admin.ModelAdmin):
     def get_urls(self):
         urls = super(WhitelistedUsernameAdmin, self).get_urls()
         my_urls = [
-            url(r'^add/$', self.my_view),
+            url(r'^add/$', self.add_view),
         ]
         return my_urls + urls
 
-    def my_view(self, request):
-        # TODO: do this if GET request, and if post, then parse->add the usernames
+    def add_view(self, request):
         context = {
             'opts': WhitelistedUsername._meta,
             'change': True,
@@ -25,4 +24,18 @@ class WhitelistedUsernameAdmin(admin.ModelAdmin):
             'has_add_permission': False,
             'has_change_permission': False
         }
-        return TemplateResponse(request, "students/add_whitelisted_usernames.html", context)
+
+        if request.method == 'GET':
+            return TemplateResponse(request, "students/add_whitelisted_usernames.html", context)
+
+        elif request.method == 'POST':
+            whitelist = request.FILES['uploaded_file']
+            cleaned_names = [name.strip().lower() for name in whitelist.readlines()]
+
+            for name in cleaned_names:
+                # NOTE: If this is slowing things down, look into bulk_create method
+                temp = WhitelistedUsername(username=name)
+                temp.save()
+
+            context['form_message'] = 'Usernames successfully whitelisted!'
+            return TemplateResponse(request, "students/add_whitelisted_usernames.html", context)
