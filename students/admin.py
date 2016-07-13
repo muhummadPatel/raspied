@@ -29,6 +29,11 @@ class WhitelistedUsernameAdmin(admin.ModelAdmin):
             return TemplateResponse(request, "students/add_whitelisted_usernames.html", context)
 
         elif request.method == 'POST':
+            # TODO: Use a form to validate this input
+            if 'uploaded_file' not in request.FILES:
+                context['form_message'] = 'Please upload a file of usernames to be whitelisted.'
+                return TemplateResponse(request, "students/add_whitelisted_usernames.html", context)
+
             whitelist = request.FILES['uploaded_file']
             cleaned_names = [name.strip().lower() for name in whitelist.readlines()]
 
