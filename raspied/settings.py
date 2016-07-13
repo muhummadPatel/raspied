@@ -169,3 +169,4 @@ PIPELINE = {
         },
     },
 }
+LOGIN_URL = '/students/accounts/login'
