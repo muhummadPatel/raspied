@@ -176,4 +176,5 @@ PIPELINE = {
     },
 }
 
+LOGIN_URL = '/students/accounts/login'
 LOGIN_REDIRECT_URL = '/students/home'
