@@ -168,6 +168,14 @@ PIPELINE = {
             ),
             'output_filename': 'js/init_js.min.js',
         },
+        'jsmpg_js': {
+            'source_filenames': (
+                'students/js/jsmpg.js',
+            ),
+            'output_filename': 'js/jsmpg_js.min.js',
+        },
     },
 }
+
 LOGIN_URL = '/students/accounts/login'
+LOGIN_REDIRECT_URL = '/students/home'
