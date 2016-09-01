@@ -138,6 +138,7 @@ PIPELINE = {
     # jquery. May be able to actually compress the js with a different
     # compressor or a different version of jquery.
     'JS_COMPRESSOR': 'pipeline.compressors.NoopCompressor',
+    'CSS_COMPRESSOR': 'pipeline.compressors.NoopCompressor',
     'STYLESHEETS': {
         'libs_css': {
             'source_filenames': (
