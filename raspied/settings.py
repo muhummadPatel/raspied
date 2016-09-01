@@ -177,7 +177,7 @@ PIPELINE = {
     },
 }
 
-LOGIN_URL = '/students/accounts/login'
-LOGIN_REDIRECT_URL = '/students/home'
+LOGIN_URL = '/students/accounts/login/'
+LOGIN_REDIRECT_URL = '/students/home/'
 
 STREAMING_SERVER_IP = '105.186.195.110'
