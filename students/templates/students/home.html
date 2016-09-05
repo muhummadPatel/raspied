@@ -6,10 +6,16 @@
     #videoCanvas {
       /* Always stretch the canvas to 640x480, regardless of its
       internal size. */
-      width: 640px;
-      height: 480px;
+      /*width: 640px;
+      height: 480px;*/
+      background-color: red;
     }
   </style>
+  <style type="text/css">
+    #editor {
+        min-height: 500px;
+    }
+</style>
 {% endblock extra_css_b %}
 
 {% block nav_ul_desktop_b %}
@@ -27,7 +33,15 @@
     </div>
 
     <div class="row">
-      <div class="col s8 offset-s2">
+      <div class="col s8">
+        <div id="editor">
+          def your_code_here():
+            x = "Type or paste your code in this editor"
+            return x
+        </div>
+      </div>
+
+      <div class="col s3 offset-s1">
         <canvas id="videoCanvas" width="320" height="240">
           <p>
             Please use a browser that supports the Canvas Element, like
@@ -52,5 +66,12 @@
         var canvas = document.getElementById("videoCanvas");
         var player = new jsmpeg(client, {canvas: canvas});
     });
+  </script>
+
+  {% javascript 'ace_js' %}
+  <script>
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/monokai");
+    editor.getSession().setMode("ace/mode/python");
   </script>
 {% endblock extra_js_b %}
