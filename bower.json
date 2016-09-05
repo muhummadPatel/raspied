@@ -4,6 +4,7 @@
   "dependencies": {
     "jquery": "^3.0.0",
     "Materialize": "materialize#^0.97.6",
-    "js-cookie": "^2.1.2"
+    "js-cookie": "^2.1.2",
+    "ace-builds": "^1.2.5"
   }
 }

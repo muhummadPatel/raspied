@@ -174,13 +174,19 @@ PIPELINE = {
             ),
             'output_filename': 'js/jsmpg_js.min.js',
         },
+        'ace_js': {
+            'source_filenames': (
+                'raspied/bower_components/ace-builds/src-noconflict/ace.js',
+            ),
+            'output_filename': 'js/ace_js.min.js',
+        },
     },
 }
 
 LOGIN_URL = '/students/accounts/login/'
 LOGIN_REDIRECT_URL = '/students/home/'
 
-STREAMING_SERVER_IP = '105.186.195.110'
+STREAMING_SERVER_IP = '105.226.73.3'
 
 LOGGING = {
     'version': 1,
