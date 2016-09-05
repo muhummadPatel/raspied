@@ -180,6 +180,13 @@ PIPELINE = {
             ),
             'output_filename': 'js/ace_js.min.js',
         },
+        'filesaver_js': {
+            'source_filenames': (
+                'raspied/bower_components/Blob/Blob.js',
+                'raspied/bower_components/file-saver/FileSaver.min.js',
+            ),
+            'output_filename': 'js/filesaver_js.min.js',
+        },
     },
 }
 
