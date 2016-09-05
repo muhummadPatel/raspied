@@ -33,8 +33,11 @@
     </div>
 
     <div class="row">
-      <div class="col s4">
+      <div class="col s3">
         <a class="waves-effect waves-light btn modal-trigger orange" href="#file-upload-modal">Upload Script</a>
+      </div>
+      <div class="col s3">
+        <a id="download-script-btn" class="waves-effect waves-light btn orange" href="#">Download Script</a>
       </div>
     </div>
 
@@ -107,6 +110,19 @@
       editor.getSession().setMode("ace/mode/python");
       editor.getSession().setTabSize(4);
       editor.getSession().setUseSoftTabs(true);
+    });
+  </script>
+
+  {% javascript 'filesaver_js' %}
+  <script>
+    $(document).ready(function(){
+      $("#download-script-btn").click(function(){
+        var editor = ace.edit("editor");
+        var user_script = editor.getValue();
+
+        var blob = new Blob([user_script], {type: "text/plain;charset=utf-8"});
+        saveAs(blob, "raspied_script.py");
+      });
     });
   </script>
 {% endblock extra_js_b %}
