@@ -1,0 +1,77 @@
+{% extends "base_page.html" %}
+{% load staticfiles pipeline %}
+
+{% block extra_css_b %}
+  {% stylesheet 'pickadate_css' %}
+  <style type="text/css">
+    .picker__frame {
+        overflow-y: auto;
+    }
+  </style>
+{% endblock extra_css_b %}
+
+{% block nav_ul_desktop_b %}
+  <li><a href="{% url 'students:auth_logout' %}">Logout</li>
+{% endblock nav_ul_desktop_b %}
+{% block nav_ul_mobile_b %}
+  <li><a href="{% url 'students:auth_logout' %}">Logout</li>
+{% endblock nav_ul_mobile_b %}
+
+{% block main_body_b %}
+  <div class="container">
+    <br>
+
+    <div class="row">
+      <div class="col s4 offset-s4">
+        <form id="new-booking-form" method="post" action=".">
+          {% csrf_token %}
+
+          <input id="new-booking-date" class="datepicker" type="date" placeholder="Select Date">
+          <input id="new-booking-time" class="timepicker" type="date" placeholder="Select Time">
+          <input id="submit-new-booking" type=submit class="waves-effect waves-light btn orange" value="Make Booking" >
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock main_body_b %}
+
+{% block extra_js_b %}
+  {% javascript 'pickadate_js' %}
+  <script>
+    $(document).ready(function(){
+      var update_booking_form = function(){
+        var date = $("#new-booking-date").val();
+        var time = $("#new-booking-time").val();
+
+        $("#submit-new-booking").attr("disabled", !(date && time));
+      };
+
+      $('.datepicker').pickadate({
+        // onSet: update_booking_form
+      });
+
+      $('.timepicker').pickatime({
+        // onSet: update_booking_form
+      });
+    });
+  </script>
+
+  <script>
+    $("#new-booking-form").on('submit', function(event){
+      event.preventDefault();
+
+      var date = $("#new-booking-date").val();
+      var time = $("#new-booking-time").val();
+
+      var datetime = date + " " + time;
+      console.log(datetime);
+
+      data = { datetime_str:  datetime};
+      $.post("/students/booking/", data, function(){
+        Materialize.toast("Booking Made", 4000);
+      }).fail(function(){
+        Materialize.toast("Sorry, booking could not be made. Please try again later.", 4000);
+      });
+    });
+  </script>
+{% endblock extra_js_b %}
