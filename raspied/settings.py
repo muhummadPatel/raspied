@@ -177,6 +177,8 @@ PIPELINE = {
         'ace_js': {
             'source_filenames': (
                 'raspied/bower_components/ace-builds/src-noconflict/ace.js',
+                'raspied/bower_components/ace-builds/src-noconflict/mode-python.js',
+                'raspied/bower_components/ace-builds/src-noconflict/theme-monokai.js',
             ),
             'output_filename': 'js/ace_js.min.js',
         },
