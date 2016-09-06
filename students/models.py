@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -14,3 +15,9 @@ class WhitelistedUsername(models.Model):
     def save(self, *args, **kwargs):
         self.username = self.username.lower()
         super(WhitelistedUsername, self).save(*args, **kwargs)
+
+
+class Booking(models.Model):
+    user = models.ForeignKey(User, editable=False, default=None, blank=False)
+    start_time = models.DateTimeField(blank=False)
+    end_time = models.DateTimeField(blank=False)
