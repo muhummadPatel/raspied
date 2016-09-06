@@ -152,6 +152,14 @@ PIPELINE = {
             ),
             'output_filename': 'css/custom_css.min.css',
         },
+        'pickadate_css': {
+            'source_filenames': (
+                'raspied/bower_components/pickadate/lib/compressed/themes/default.css',
+                'raspied/bower_components/pickadate/lib/compressed/themes/default.date.css',
+                'raspied/bower_components/pickadate/lib/compressed/themes/default.time.css',
+            ),
+            'output_filename': 'css/pickadate_css.min.css',
+        },
     },
     'JAVASCRIPT': {
         'libs_js': {
@@ -188,6 +196,15 @@ PIPELINE = {
                 'raspied/bower_components/file-saver/FileSaver.min.js',
             ),
             'output_filename': 'js/filesaver_js.min.js',
+        },
+        'pickadate_js': {
+            'source_filenames': (
+                'raspied/bower_components/pickadate/lib/compressed/picker.js',
+                'raspied/bower_components/pickadate/lib/compressed/picker.date.js',
+                'raspied/bower_components/pickadate/lib/compressed/picker.time.js',
+                'raspied/bower_components/pickadate/lib/compressed/legacy.js',
+            ),
+            'output_filename': 'js/pickadate_js.min.js',
         },
     },
 }
