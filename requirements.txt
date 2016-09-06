@@ -3,4 +3,6 @@ django-pipeline==1.6.8
 django-registration==2.1.2
 gunicorn==19.6.0
 psycopg2==2.6.1
+python-dateutil==2.5.3
+six==1.10.0
 whitenoise==3.2
