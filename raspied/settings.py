@@ -121,7 +121,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -213,6 +213,9 @@ LOGIN_URL = '/students/accounts/login/'
 LOGIN_REDIRECT_URL = '/students/home/'
 
 STREAMING_SERVER_IP = '105.226.73.3'
+
+# Duration of a bookable session in minutes
+BOOKING_INTERVAL = 60
 
 LOGGING = {
     'version': 1,
