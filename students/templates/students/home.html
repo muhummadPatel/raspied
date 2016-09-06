@@ -15,7 +15,14 @@
     #editor {
         min-height: 500px;
     }
-</style>
+  </style>
+
+  {% stylesheet 'pickadate_css' %}
+  <style type="text/css">
+    .picker__frame {
+        overflow-y: auto;
+    }
+  </style>
 {% endblock extra_css_b %}
 
 {% block nav_ul_desktop_b %}
@@ -55,10 +62,14 @@
             <a href="http://www.apple.com/safari/">Safari</a> or Internet Explorer 10
           </p>
         </canvas>
+
+        <br><br>
+
+        <input class="datepicker" type="text" placeholder="Select Date">
+        <input class="timepicker" type="text" placeholder="Select Time">
       </div>
     </div>
   </div>
-
 
   <!-- File upload modal -->
   <div id="file-upload-modal" class="modal">
@@ -123,6 +134,15 @@
         var blob = new Blob([user_script], {type: "text/plain;charset=utf-8"});
         saveAs(blob, "raspied_script.py");
       });
+    });
+  </script>
+
+  {% javascript 'pickadate_js' %}
+  <script>
+    $(document).ready(function(){
+      $('.datepicker').pickadate();
+
+      $('.timepicker').pickatime();
     });
   </script>
 {% endblock extra_js_b %}
