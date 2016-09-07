@@ -69,6 +69,12 @@ def booking(request):
                 if (new_booking.start_time <= booking.end_time) and (new_booking.end_time >= booking.start_time):
                     return HttpResponse('Booking already taken', status=400)
 
+            #Checking for too many bookings in this month
+            num_user_bookings = Booking.objects.filter(user=user, start_time__month=today.month).count()
+            allowed_bookings_pm = getattr(settings, 'USER_BOOKINGS_PER_MONTH', 5)
+            if num_user_bookings > allowed_bookings_pm:
+                return HttpResponse('Monthly booking quota exceeded', status=400)
+
             new_booking.save()
 
             return HttpResponse('Booking added', status=200)

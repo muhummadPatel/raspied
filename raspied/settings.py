@@ -216,6 +216,7 @@ STREAMING_SERVER_IP = '105.226.73.3'
 
 # Duration of a bookable session in seconds
 BOOKING_INTERVAL = 3600
+USER_BOOKINGS_PER_MONTH = 5
 
 LOGGING = {
     'version': 1,
