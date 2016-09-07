@@ -50,10 +50,10 @@ def booking(request):
         return render(request, 'students/booking.html', context)
     if request.method =='POST':
         try:
-            parsed_timestring = timestring_parser.parse(request.POST['datetime_str'])
-        except ValueError, OverflowError:
-            #TODO: return a useful error message for use in the ajax failure callback
-            return HttpResponse('', status=400)
+            timestring = request.POST['datetime_str']
+            parsed_timestring = timestring_parser.parse(timestring)
+        except (ValueError, OverflowError) as e:
+            return HttpResponse('Unable to parse date', status=400)
 
         user = request.user
         start_time = parsed_timestring
@@ -63,6 +63,6 @@ def booking(request):
             new_booking = Booking(user=user, start_time=start_time, end_time=end_time)
             new_booking.save()
 
-            return HttpResponse('', status=200)
-        except AttributeError, ValueError:
-            return HttpResponse('', status=400)
+            return HttpResponse('Booking added', status=200)
+        except (AttributeError, ValueError) as e:
+            return HttpResponse('Could not save booking', status=400)
