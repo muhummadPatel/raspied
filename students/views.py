@@ -26,18 +26,15 @@ class ExclusiveRegistrationView(RegistrationView):
 def home(request):
     context = {}
     if request.method == 'GET':
-        print 'get view method'
         context['streaming_server_ip'] = getattr(settings, 'STREAMING_SERVER_IP', '105.225.158.228')
         return render(request, 'students/home.html', context)
 
     elif request.method == 'POST':
-        print "post view method"
         if 'uploaded_file' not in request.FILES:
             context['user_script'] = "Could not upload file"
             return render(request, 'students/home.html', context)
 
         contents = request.FILES['uploaded_file'].read()
-        print contents
         context['user_script'] = contents
 
         return render(request, 'students/home.html', context)
