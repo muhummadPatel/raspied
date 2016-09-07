@@ -21,3 +21,6 @@ class Booking(models.Model):
     user = models.ForeignKey(User, editable=False, default=None, blank=False)
     start_time = models.DateTimeField(blank=False)
     end_time = models.DateTimeField(blank=False)
+
+    def __str__(self):
+        return "%s: %s - %s" % (self.user, self.start_time, self.end_time)
