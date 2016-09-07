@@ -57,7 +57,7 @@ def booking(request):
 
         user = request.user
         start_time = parsed_timestring
-        end_time = start_time + timedelta(minutes=getattr(settings, 'BOOKNG_INTERVAL', 60))
+        end_time = start_time + timedelta(seconds=getattr(settings, 'BOOKING_INTERVAL', 3600) - 1)
 
         try:
             new_booking = Booking(user=user, start_time=start_time, end_time=end_time)

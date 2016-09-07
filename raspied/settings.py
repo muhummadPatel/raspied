@@ -214,8 +214,8 @@ LOGIN_REDIRECT_URL = '/students/home/'
 
 STREAMING_SERVER_IP = '105.226.73.3'
 
-# Duration of a bookable session in minutes
-BOOKING_INTERVAL = 60
+# Duration of a bookable session in seconds
+BOOKING_INTERVAL = 3600
 
 LOGGING = {
     'version': 1,
