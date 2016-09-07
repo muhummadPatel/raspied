@@ -69,10 +69,14 @@
       console.log(datetime);
 
       data = { datetime_str:  datetime};
-      $.post("/students/booking/", data, function(){
-        Materialize.toast("Booking Made", 4000);
-      }).fail(function(){
-        Materialize.toast("Sorry, booking could not be made. Please try again later.", 4000);
+      $.post("/students/booking/", data, function(response){
+        Materialize.toast(response, 4000);
+        console.log("Successfully added booking");
+        console.log(response);
+      }).fail(function(response){
+        Materialize.toast("Sorry, failed! " + response.responseText + ".", 4000);
+        console.log("Failed to add booking");
+        console.log(response);
       });
     });
   </script>
