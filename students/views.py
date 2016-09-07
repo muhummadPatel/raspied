@@ -61,6 +61,14 @@ def booking(request):
 
         try:
             new_booking = Booking(user=user, start_time=start_time, end_time=end_time)
+
+            #Checking for overlap
+            today = datetime.now()
+            todays_bookings = Booking.objects.filter(start_time__year=today.year, start_time__month=today.month, start_time__day=today.day)
+            for booking in todays_bookings:
+                if (new_booking.start_time <= booking.end_time) and (new_booking.end_time >= booking.start_time):
+                    return HttpResponse('Booking already taken', status=400)
+
             new_booking.save()
 
             return HttpResponse('Booking added', status=200)
