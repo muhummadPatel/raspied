@@ -93,6 +93,8 @@
         data = { datetime_str:  datetime};
         $.post("/students/booking/", data, function(response){
           Materialize.toast(response, 4000);
+
+          update_booking_list();
         }).fail(function(response){
           Materialize.toast("Sorry, failed! " + response.responseText, 4000);
         });
