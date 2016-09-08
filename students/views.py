@@ -3,6 +3,7 @@ from dateutil import parser as timestring_parser
 from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model, login
 from django.contrib.auth.decorators import login_required
+from django.core import serializers
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
@@ -77,3 +78,16 @@ def booking(request):
             return HttpResponse('Booking added', status=200)
         except (AttributeError, ValueError) as e:
             return HttpResponse('Could not save booking', status=400)
+
+
+@login_required
+@require_http_methods(['GET'])
+def booking_list(request):
+    today = datetime.now()
+    today.replace(minute=0, second=0, microsecond=0)
+
+    #get all the user bookings from this hour onwards
+    user_bookings = Booking.objects.filter(user=request.user, start_time__gte=today).order_by('start_time')
+
+    response_data = serializers.serialize('json', user_bookings)
+    return HttpResponse(response_data, content_type='application/json')
