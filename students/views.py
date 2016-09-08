@@ -91,3 +91,10 @@ def booking_list(request):
 
     response_data = serializers.serialize('json', user_bookings)
     return HttpResponse(response_data, content_type='application/json')
+
+
+@login_required
+@require_http_methods(['POST'])
+def booking_delete(request, booking_id):
+    print "received POST to delete %s" % (booking_id)
+    return HttpResponse('Done', status=200)
