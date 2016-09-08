@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, get_user_model, login
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_http_methods
 
 from registration import signals
@@ -97,4 +97,10 @@ def booking_list(request):
 @require_http_methods(['POST'])
 def booking_delete(request, booking_id):
     print "received POST to delete %s" % (booking_id)
-    return HttpResponse('Done', status=200)
+
+    #get the booking to be deleted and make sure that it exists, is owned by the requesting user, and is in the future
+    curr_time = datetime.now()
+    booking = get_object_or_404(Booking, pk=booking_id, user=request.user, start_time__gte=curr_time)
+    booking.delete()
+
+    return HttpResponse('Booking deleted', status=200)
