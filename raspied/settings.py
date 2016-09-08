@@ -206,6 +206,12 @@ PIPELINE = {
             ),
             'output_filename': 'js/pickadate_js.min.js',
         },
+        'moment_js': {
+            'source_filenames': (
+                'raspied/bower_components/moment/min/moment.min.js',
+            ),
+            'output_filename': 'js/moment_js.min.js',
+        },
     },
 }
 
