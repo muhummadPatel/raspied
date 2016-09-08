@@ -118,17 +118,22 @@
       $("#user-bookings-list").empty();
 
       $.getJSON("/students/booking/list/", function(user_bookings){
-        $.each(user_bookings, function(index, booking){
-          booking_id = booking.pk;
-          date = moment(booking.fields.start_time).format('Do MMM YY');
+        if(user_bookings.length === 0){
+          help_text = "<li class=\"collection-item avatar\"><div><span class=\"subtext\" style=\"color:darkgrey;\">You have no upcoming bookings.</span></div></li>";
+          $("#user-bookings-list").append(help_text);
+        }else{
+          $.each(user_bookings, function(index, booking){
+            booking_id = booking.pk;
+            date = moment(booking.fields.start_time).format('Do MMM YY');
 
-          start_time = moment(booking.fields.start_time).format('HH:MM');
-          end_time = moment(booking.fields.end_time).format('HH:MM');;
-          booking_info = start_time + " - " + end_time;
+            start_time = moment(booking.fields.start_time).format('HH:MM');
+            end_time = moment(booking.fields.end_time).format('HH:MM');;
+            booking_info = start_time + " - " + end_time;
 
-          list_item_html = "<li class=\"collection-item avatar\"><div><span class=\"title\">" + date + "</span><p id=\"booking_" + booking_id + "\" class=\"subtext\">" + booking_info + "</p><a id=\"delete-booking_" + booking_id + "\" href=\"#\" class=\"secondary-content\"><i class=\"material-icons md-18\">delete</i></a><div></li>";
-          $("#user-bookings-list").append(list_item_html);
-        })
+            list_item_html = "<li class=\"collection-item avatar\"><div><span class=\"title\">" + date + "</span><p id=\"booking_" + booking_id + "\" class=\"subtext\">" + booking_info + "</p><a id=\"delete-booking_" + booking_id + "\" href=\"#\" class=\"secondary-content\"><i class=\"material-icons md-18\">delete</i></a><div></li>";
+            $("#user-bookings-list").append(list_item_html);
+          })
+        }
       }).fail(function(){
         Materialize.toast("Sorry, could not load your bookings");
       });
