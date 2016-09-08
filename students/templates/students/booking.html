@@ -61,7 +61,7 @@
 
           <input id="new-booking-date" class="datepicker" type="date" placeholder="Select Date">
           <input id="new-booking-time" class="timepicker" type="date" placeholder="Select Time">
-          <input id="submit-new-booking" type=submit class="waves-effect waves-light btn orange disabled" value="Make Booking">
+          <button id="submit-new-booking" type=submit class="waves-effect waves-light btn orange disabled">Make Booking</button>
         </form>
       </div>
     </div>
@@ -110,7 +110,7 @@
       var date = $("#new-booking-date").val();
       var time = $("#new-booking-time").val();
 
-      $("#submit-new-booking").parent().toggleClass("disabled", !(date && time));
+      $("#submit-new-booking").toggleClass("disabled", !(date && time));
     };
 
     var update_booking_list = function(){
