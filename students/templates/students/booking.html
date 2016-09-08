@@ -7,6 +7,19 @@
     .picker__frame {
         overflow-y: auto;
     }
+
+    .collection-item.avatar {
+      min-height: auto    !important;
+      padding-left: 30px  !important;
+    }
+
+    li.collection-item.avatar span.title {
+      font-size: large    !important;
+    }
+
+    li.collection-item.avatar p.subtext {
+      color: darkgrey;
+    }
   </style>
 {% endblock extra_css_b %}
 
@@ -22,7 +35,27 @@
     <br>
 
     <div class="row">
-      <div class="col s4 offset-s4">
+      <div class="col s7">
+        <ul class="collection with-header">
+          <li class="collection-header"><h4>Bookings</h4></li>
+          <div id="user-bookings-list">
+            <!-- populated by ajax request -->
+          </div>
+
+          <!-- this adds an 'ADD' modal trigger to the end of the list
+          <li id="add-list-btn" class="collection-item">
+            <div>
+              <a href="#add-list-modal" class="modal-trigger">
+                <i class="material-icons md-18">add</i>
+              </a>
+            </div>
+          </li>
+          -->
+        </ul>
+        <button onclick="update_booking_list()">Click me</button>
+      </div>
+
+      <div class="col s4 offset-s1">
         <form id="new-booking-form" method="post" action=".">
           {% csrf_token %}
 
@@ -37,17 +70,10 @@
 
 {% block extra_js_b %}
   {% javascript 'pickadate_js' %}
+  {% javascript 'moment_js' %}
+
   <script>
-    $(document).ready(function(){
-      var update_booking_form = function(){
-        var date = $("#new-booking-date").val();
-        var time = $("#new-booking-time").val();
-
-        $("#submit-new-booking").attr("disabled", !(date && time));
-        // TODO: change the color of the button when disabled
-        // http://www.w3schools.com/CSSref/sel_attr_contain.asp
-      };
-
+    var init_booking_form = function(){
       $('.datepicker').pickadate({
         onSet: update_booking_form
       });
@@ -55,29 +81,85 @@
       $('.timepicker').pickatime({
         onSet: update_booking_form
       });
-    });
-  </script>
 
-  <script>
-    $("#new-booking-form").on('submit', function(event){
-      event.preventDefault();
+      $("#new-booking-form").on('submit', function(event){
+        event.preventDefault();
 
+        var date = $("#new-booking-date").val();
+        var time = $("#new-booking-time").val();
+
+        var datetime = date + " " + time;
+
+        data = { datetime_str:  datetime};
+        $.post("/students/booking/", data, function(response){
+          Materialize.toast(response, 4000);
+        }).fail(function(response){
+          Materialize.toast("Sorry, failed! " + response.responseText, 4000);
+        });
+      });
+
+      update_booking_form();
+    };
+
+    var init_booking_list = function(){
+      update_booking_list();
+      $("#user-bookings-list").on("click", ".secondary-content", delete_booking);
+    };
+
+    var update_booking_form = function(){
       var date = $("#new-booking-date").val();
       var time = $("#new-booking-time").val();
 
-      var datetime = date + " " + time;
-      console.log(datetime);
+      $("#submit-new-booking").parent().toggleClass("disabled", !(date && time));
+    };
 
-      data = { datetime_str:  datetime};
-      $.post("/students/booking/", data, function(response){
-        Materialize.toast(response, 4000);
-        console.log("Successfully added booking");
-        console.log(response);
-      }).fail(function(response){
-        Materialize.toast("Sorry, failed! " + response.responseText + ".", 4000);
-        console.log("Failed to add booking");
-        console.log(response);
+    var update_booking_list = function(){
+      $("#user-bookings-list").empty();
+
+      $.getJSON("/students/booking/list/", function(user_bookings){
+        $.each(user_bookings, function(index, booking){
+          booking_id = booking.pk;
+          date = moment(booking.fields.start_time).format('Do MMM YY');
+
+          start_time = moment(booking.fields.start_time).format('HH:MM');
+          end_time = moment(booking.fields.end_time).format('HH:MM');;
+          booking_info = start_time + " - " + end_time;
+
+          list_item_html = "<li class=\"collection-item avatar\"><div><span class=\"title\">" + date + "</span><p id=\"booking_" + booking_id + "\" class=\"subtext\">" + booking_info + "</p><a id=\"delete-booking_" + booking_id + "\" href=\"#\" class=\"secondary-content\"><i class=\"material-icons md-18\">delete</i></a><div></li>";
+          $("#user-bookings-list").append(list_item_html);
+        })
+      }).fail(function(){
+        Materialize.toast("Sorry, could not load your bookings");
       });
+    };
+
+    var delete_booking = function(event){
+      event.preventDefault();
+
+      source_btn = $(this);
+      booking_id = source_btn.attr("id").match(/\d+/g);
+        if(booking_id.length === 0){
+        Materialize.toast("Sorry, booking not found");
+        return false;
+      }else{
+        booking_id = booking_id[0];
+      }
+
+      // POST to delete the specified booking
+      $.post("/students/booking/" + booking_id + "/delete/", function(response){
+        Materialize.toast("Successfully deleted booking", 4000)
+
+        update_booking_list();
+      }).fail(function(response){
+        Materialize.toast("Could not delete booking", 4000);
+      });
+    };
+  </script>
+
+  <script>
+    $(document).ready(function(){
+      init_booking_form();
+      init_booking_list();
     });
   </script>
 {% endblock extra_js_b %}
