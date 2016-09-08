@@ -20,6 +20,12 @@
     li.collection-item.avatar p.subtext {
       color: darkgrey;
     }
+
+    hr.header-sep {
+      height: 0;
+      border: 0;
+      border-top: 1px solid gainsboro;
+    }
   </style>
 {% endblock extra_css_b %}
 
@@ -45,6 +51,8 @@
       </div>
 
       <div class="col s4 offset-s1">
+        <h4>Make a Booking</h4>
+        <hr class="header-sep">
         <form id="new-booking-form" method="post" action=".">
           {% csrf_token %}
 
