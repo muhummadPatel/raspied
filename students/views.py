@@ -61,6 +61,7 @@ def booking(request):
             new_booking = Booking(user=user, start_time=start_time, end_time=end_time)
 
             #Checking for overlap
+            #TODO: FIX THIS SHIT!!!
             today = datetime.now()
             todays_bookings = Booking.objects.filter(start_time__year=today.year, start_time__month=today.month, start_time__day=today.day)
             for booking in todays_bookings:
