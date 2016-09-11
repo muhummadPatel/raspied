@@ -141,7 +141,7 @@
           })
         }
       }).fail(function(){
-        Materialize.toast("Sorry, could not load your bookings");
+        Materialize.toast("Sorry, could not load your bookings", 4000);
       });
     };
 
@@ -151,7 +151,7 @@
       source_btn = $(this);
       booking_id = source_btn.attr("id").match(/\d+/g);
         if(booking_id.length === 0){
-        Materialize.toast("Sorry, booking not found");
+        Materialize.toast("Sorry, booking not found", 4000);
         return false;
       }else{
         booking_id = booking_id[0];
