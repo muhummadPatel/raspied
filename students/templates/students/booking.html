@@ -72,7 +72,8 @@
   <script>
     var init_booking_form = function(){
       $('.datepicker').pickadate({
-        onSet: update_booking_form
+        onSet: update_booking_form,
+        min: true
       });
 
       $('.timepicker').pickatime({
