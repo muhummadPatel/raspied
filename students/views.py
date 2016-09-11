@@ -61,14 +61,13 @@ def booking(request):
             new_booking = Booking(user=user, start_time=start_time, end_time=end_time)
 
             #Checking for overlap
-            #TODO: FIX THIS SHIT!!!
-            today = datetime.now()
-            todays_bookings = Booking.objects.filter(start_time__year=today.year, start_time__month=today.month, start_time__day=today.day)
-            for booking in todays_bookings:
+            day_bookings = Booking.objects.filter(start_time__year=start_time.year, start_time__month=start_time.month, start_time__day=start_time.day)
+            for booking in day_bookings:
                 if (new_booking.start_time <= booking.end_time) and (new_booking.end_time >= booking.start_time):
                     return HttpResponse('Booking already taken', status=400)
 
             #Checking for too many bookings in this month
+            today = datetime.now()
             num_user_bookings = Booking.objects.filter(user=user, start_time__month=today.month).count()
             allowed_bookings_pm = getattr(settings, 'USER_BOOKINGS_PER_MONTH', 5)
             if num_user_bookings > allowed_bookings_pm:
