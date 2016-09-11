@@ -94,6 +94,17 @@ def booking_list(request):
 
 
 @login_required
+@require_http_methods(['GET'])
+def booking_listall(request, booking_date):
+    booking_date = timestring_parser.parse(booking_date)
+
+    bookings = Booking.objects.filter(start_time__year=booking_date.year, start_time__month=booking_date.month, start_time__day=booking_date.day)
+
+    response_data = serializers.serialize('json', bookings)
+    return HttpResponse(response_data, content_type='application/json')
+
+
+@login_required
 @require_http_methods(['POST'])
 def booking_delete(request, booking_id):
     print "received POST to delete %s" % (booking_id)
