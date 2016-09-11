@@ -77,7 +77,9 @@
       });
 
       $('.timepicker').pickatime({
-        onSet: update_booking_form
+        onSet: update_booking_form,
+        interval: 60,
+        format: "HH:i"
       });
 
       $("#new-booking-form").on('submit', function(event){
