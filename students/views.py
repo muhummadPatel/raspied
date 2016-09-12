@@ -70,7 +70,8 @@ def booking(request):
             today = datetime.now()
             num_user_bookings = Booking.objects.filter(user=user, start_time__month=today.month).count()
             allowed_bookings_pm = getattr(settings, 'USER_BOOKINGS_PER_MONTH', 5)
-            if num_user_bookings > allowed_bookings_pm:
+            print
+            if num_user_bookings + 1 > allowed_bookings_pm:
                 return HttpResponse('Monthly booking quota exceeded', status=400)
 
             new_booking.save()
