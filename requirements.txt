@@ -6,3 +6,5 @@ psycopg2==2.6.1
 python-dateutil==2.5.3
 six==1.10.0
 whitenoise==3.2
+channels>=0.10
+asgi_redis>=0.9
