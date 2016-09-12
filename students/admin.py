@@ -2,7 +2,7 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.template.response import TemplateResponse
 
-from .models import WhitelistedUsername
+from .models import Booking, WhitelistedUsername
 
 
 @admin.register(WhitelistedUsername)
@@ -44,3 +44,6 @@ class WhitelistedUsernameAdmin(admin.ModelAdmin):
 
             context['form_message'] = 'Usernames successfully whitelisted!'
             return TemplateResponse(request, "students/add_whitelisted_usernames.html", context)
+
+
+admin.site.register(Booking)

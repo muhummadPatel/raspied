@@ -121,7 +121,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -151,6 +151,14 @@ PIPELINE = {
               'raspied/css/custom.css',
             ),
             'output_filename': 'css/custom_css.min.css',
+        },
+        'pickadate_css': {
+            'source_filenames': (
+                'raspied/bower_components/pickadate/lib/compressed/themes/default.css',
+                'raspied/bower_components/pickadate/lib/compressed/themes/default.date.css',
+                'raspied/bower_components/pickadate/lib/compressed/themes/default.time.css',
+            ),
+            'output_filename': 'css/pickadate_css.min.css',
         },
     },
     'JAVASCRIPT': {
@@ -189,13 +197,32 @@ PIPELINE = {
             ),
             'output_filename': 'js/filesaver_js.min.js',
         },
+        'pickadate_js': {
+            'source_filenames': (
+                'raspied/bower_components/pickadate/lib/compressed/picker.js',
+                'raspied/bower_components/pickadate/lib/compressed/picker.date.js',
+                'raspied/bower_components/pickadate/lib/compressed/picker.time.js',
+                'raspied/bower_components/pickadate/lib/compressed/legacy.js',
+            ),
+            'output_filename': 'js/pickadate_js.min.js',
+        },
+        'moment_js': {
+            'source_filenames': (
+                'raspied/bower_components/moment/min/moment.min.js',
+            ),
+            'output_filename': 'js/moment_js.min.js',
+        },
     },
 }
 
 LOGIN_URL = '/students/accounts/login/'
 LOGIN_REDIRECT_URL = '/students/home/'
 
-STREAMING_SERVER_IP = '105.226.73.3'
+STREAMING_SERVER_IP = '105.226.75.112'
+
+# Duration of a bookable session in seconds
+BOOKING_INTERVAL = 3600
+USER_BOOKINGS_PER_MONTH = 5
 
 LOGGING = {
     'version': 1,
