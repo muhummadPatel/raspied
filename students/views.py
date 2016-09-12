@@ -40,13 +40,14 @@ def home(request):
 
         return render(request, 'students/home.html', context)
 
+
 @login_required
 @require_http_methods(['GET', 'POST'])
 def booking(request):
     context = {}
     if request.method == 'GET':
         return render(request, 'students/booking.html', context)
-    if request.method =='POST':
+    if request.method == 'POST':
         try:
             timestring = request.POST['datetime_str']
             parsed_timestring = timestring_parser.parse(timestring)
@@ -60,13 +61,17 @@ def booking(request):
         try:
             new_booking = Booking(user=user, start_time=start_time, end_time=end_time)
 
-            #Checking for overlap
-            day_bookings = Booking.objects.filter(start_time__year=start_time.year, start_time__month=start_time.month, start_time__day=start_time.day)
+            # Checking for overlap
+            day_bookings = Booking.objects.filter(
+                            start_time__year=start_time.year,
+                            start_time__month=start_time.month,
+                            start_time__day=start_time.day)
+
             for booking in day_bookings:
                 if (new_booking.start_time <= booking.end_time) and (new_booking.end_time >= booking.start_time):
                     return HttpResponse('Booking already taken', status=400)
 
-            #Checking for too many bookings in this month
+            # Checking for too many bookings in this month
             today = datetime.now()
             num_user_bookings = Booking.objects.filter(user=user, start_time__month=today.month).count()
             allowed_bookings_pm = getattr(settings, 'USER_BOOKINGS_PER_MONTH', 5)
@@ -87,7 +92,7 @@ def booking_list(request):
     today = datetime.now()
     today.replace(minute=0, second=0, microsecond=0)
 
-    #get all the user bookings from this hour onwards
+    # get all the user bookings from this hour onwards
     user_bookings = Booking.objects.filter(user=request.user, start_time__gte=today).order_by('start_time')
 
     response_data = serializers.serialize('json', user_bookings)
@@ -99,7 +104,10 @@ def booking_list(request):
 def booking_listall(request, booking_date):
     booking_date = timestring_parser.parse(booking_date)
 
-    bookings = Booking.objects.filter(start_time__year=booking_date.year, start_time__month=booking_date.month, start_time__day=booking_date.day)
+    bookings = Booking.objects.filter(
+                start_time__year=booking_date.year,
+                start_time__month=booking_date.month,
+                start_time__day=booking_date.day)
 
     response_data = serializers.serialize('json', bookings)
     return HttpResponse(response_data, content_type='application/json')
@@ -110,7 +118,7 @@ def booking_listall(request, booking_date):
 def booking_delete(request, booking_id):
     print "received POST to delete %s" % (booking_id)
 
-    #get the booking to be deleted and make sure that it exists, is owned by the requesting user, and is in the future
+    # get the booking to be deleted and make sure that it exists, is owned by the requesting user, and is in the future
     curr_time = datetime.now()
     booking = get_object_or_404(Booking, pk=booking_id, user=request.user, start_time__gte=curr_time)
     booking.delete()
