@@ -69,3 +69,4 @@ local_settings.py
 # virtualenv
 venv/
 ENV/
+.idea
