@@ -59,6 +59,18 @@ MIDDLEWARE_CLASSES = [
 
 ROOT_URLCONF = 'raspied.urls'
 
+redis_host = os.environ.get('REDIS_HOST', 'localhost')
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgi_redis.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [(redis_host, 6379)],
+        },
+        "ROUTING": "raspied.routing.channel_routing",
+    },
+}
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
