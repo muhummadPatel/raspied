@@ -22,3 +22,12 @@ def get_robot_terminal_or_error(robot_id, user):
         raise ClientError("ROBOT_ACCESS_DENIED")
 
     return robot
+
+
+def get_booked_robot(user):
+    now = datetime.now()
+    has_booking = len(Booking.objects.filter(user=user, start_time__lte=now, end_time__gte=now)) > 0
+
+    if has_booking or user.is_staff:
+        # TODO: To support multiple robots, we will need to pull in the robot_id from the booking
+        return RobotTerminal.objects.first()
