@@ -1,0 +1,24 @@
+from datetime import datetime
+
+from .exceptions import ClientError
+from .models import Booking, RobotTerminal
+
+
+def get_robot_terminal_or_error(robot_id, user):
+    # Check if the user is logged in
+    if not user.is_authenticated():
+        raise ClientError("USER_HAS_TO_LOGIN")
+
+    # get the robot_terminal with the given id
+    try:
+        robot = RobotTerminal.objects.get(pk=robot_id)
+    except RobotTerminal.DoesNotExist:
+        raise ClientError("ROBOT_INVALID")
+
+    # Check permissions
+    now = datetime.now()
+    has_booking = len(Booking.objects.filter(user=user, start_time__lte=now, end_time__gte=now)) > 0
+    if not (user.is_staff or has_booking):
+        raise ClientError("ROBOT_ACCESS_DENIED")
+
+    return robot
