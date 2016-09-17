@@ -12,7 +12,7 @@ from registration import signals
 from registration.backends.simple.views import RegistrationView
 
 from .forms import ExclusiveRegistrationForm
-from .models import Booking
+from .models import Booking, RobotTerminal
 
 
 User = get_user_model()
@@ -27,6 +27,9 @@ class ExclusiveRegistrationView(RegistrationView):
 def home(request):
     context = {}
     if request.method == 'GET':
+        robots = RobotTerminal.objects.order_by("title")
+        context['robots'] = robots
+
         context['streaming_server_ip'] = getattr(settings, 'STREAMING_SERVER_IP', '105.225.158.228')
         return render(request, 'students/home.html', context)
 
