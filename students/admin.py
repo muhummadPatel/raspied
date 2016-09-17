@@ -2,7 +2,7 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.template.response import TemplateResponse
 
-from .models import Booking, WhitelistedUsername
+from .models import Booking, RobotTerminal, WhitelistedUsername
 
 
 @admin.register(WhitelistedUsername)
@@ -47,3 +47,10 @@ class WhitelistedUsernameAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Booking)
+
+
+admin.site.register(
+    RobotTerminal,
+    list_display=["id", "title"],
+    list_display_links=["id"],
+)
