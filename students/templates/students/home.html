@@ -15,6 +15,10 @@
     #editor {
         min-height: 500px;
     }
+
+    #terminal-output {
+      min-height: 500px;
+    }
   </style>
 {% endblock extra_css_b %}
 
@@ -33,17 +37,51 @@
     </div>
 
     <div class="row">
-      <div class="col s3">
-        <a class="waves-effect waves-light btn modal-trigger orange" href="#file-upload-modal">Upload Script</a>
-      </div>
-      <div class="col s3">
-        <a id="download-script-btn" class="waves-effect waves-light btn orange" href="#">Download Script</a>
-      </div>
-    </div>
-
-    <div class="row">
       <div class="col s8">
-        <div id="editor">{% if user_script %}{{user_script}}{% else %}Your code here...{% endif %}</div>
+        <ul class="tabs">
+          <li class="tab col s4"><a class="active" href="#editor-tab">Code editor</a></li>
+          <li class="tab col s4"><a href="#output-tab">Output</a></li>
+        </ul>
+        <br>
+
+        <div id="editor-tab" class="col s12">
+          <div class="col s4 center">
+            <a class="waves-effect waves-light btn modal-trigger orange" href="#file-upload-modal">Load Script</a>
+          </div>
+          <div class="col s5 center">
+            <a id="download-script-btn" class="waves-effect waves-light btn orange" href="javascript:void(0)">Download Script</a>
+          </div>
+          <div class="col s3 center">
+            <a id="run-script-btn" class="waves-effect waves-light btn orange disabled" href="javascript:void(0)">Run</a>
+          </div>
+          <br><br>
+
+          <div id="editor" class="col s12">{% if user_script %}{{user_script}}{% else %}Your code here...{% endif %}</div>
+        </div>
+
+        <div id="output-tab" class="col s12">
+          <!--
+          <ul class="rooms">
+            {% for robot in robots %}
+              <li class="room-link" data-room-id="{{ robot.id }}">{{ room }}</li>
+            {% empty %}
+              <p class="empty">No chat rooms defined. Maybe make some in the <a href="{% url 'admin:index' %}">admin</a>?</p>
+            {% endfor %}
+          </ul>
+
+          <div id="chats">
+          </div>
+        -->
+
+        {% if robot %}
+          <div id="terminal-output" class="col s12" data-robot-id="{{robot.id}}"></div>
+        {% endif %}
+
+        <p id="robot-help" style="display:none;">
+          You do not have the current robot booking. Please make a booking in order to send code to the robot.
+        </p>
+
+        </div>
       </div>
 
       <div class="col s3 offset-s1">
@@ -109,6 +147,15 @@
       editor.getSession().setMode("ace/mode/python");
       editor.getSession().setTabSize(4);
       editor.getSession().setUseSoftTabs(true);
+
+      if($("#terminal-output").length > 0){
+        var terminal_output = ace.edit("terminal-output");
+        terminal_output.setTheme("ace/theme/monokai");
+        terminal_output.setReadOnly(true);
+        terminal_output.getSession().setMode("ace/mode/text");
+        terminal_output.getSession().setTabSize(4);
+        terminal_output.getSession().setUseSoftTabs(true);
+      }
     });
   </script>
 
@@ -122,6 +169,74 @@
         var blob = new Blob([user_script], {type: "text/plain;charset=utf-8"});
         saveAs(blob, "raspied_script.py");
       });
+    });
+  </script>
+
+  {% javascript 'reconnectingwebsocket_js' %}
+  <script>
+    $(function(){
+      if($("#terminal-output").length < 1){
+        $("#robot-help").show();
+
+      }else{
+        var ws_path = "ws://" + window.location.host + "/robot_terminal/stream/";
+        console.log("Connecting to " + ws_path);
+        var socket = new ReconnectingWebSocket(ws_path);
+
+        socket.onmessage = function(message){
+          var data = JSON.parse(message.data);
+
+          if(data.error){
+            Materialize.toast(data.error, 4000);
+            return;
+          }
+
+          if(data.join){
+            console.log("Robot terminal socket: terminal opened");
+
+          }else if(data.leave){
+            console.log("Robot terminal socket: terminal closed");
+
+            $("#terminal-output").remove();
+            Materialize.toast("Connection to robot closed", 4000);
+
+          }else if(data.message){
+            ace.edit("terminal-output").getSession().insert({
+                row: ace.edit("terminal-output").getSession().getLength(),
+                column: 0
+              }, data.message);
+          }else{
+            console.log("Robot terminal socket: Undefined message received");
+          }
+        };
+
+        socket.onopen = function(){
+          console.log("Robot terminal socket: socket connected");
+
+          socket.send(JSON.stringify({
+            "command": "join",
+            "robot": $("#terminal-output").attr("data-robot-id")
+          }));
+        };
+
+        socket.onclose = function(){
+          console.log("Robot terminal socket: socket disconnected");
+        }
+
+        $("#run-script-btn").on("click", function(){
+          var editor = ace.edit("editor");
+          var user_script = editor.getValue();
+
+          socket.send(JSON.stringify({
+            "command": "send",
+            "robot": $("#terminal-output").attr("data-robot-id"),
+            "message": user_script
+          }));
+          return false;
+        });
+
+        $("#run-script-btn").toggleClass("disabled", false);
+      }
     });
   </script>
 {% endblock extra_js_b %}
