@@ -67,6 +67,7 @@ class RobotTerminal(models.Model):
             ssh.prompt()
 
             lines[-1] += '\n'
+            lines = [l for l in lines if not l.startswith('#')]
 
             for line in lines:
                 ssh.send(line)
