@@ -46,6 +46,10 @@ class RobotTerminal(models.Model):
 
     def send_command(self, command, user):
         lines = StringIO(command).readlines()
+        lines[-1] += '\n'
+        lines = [l for l in lines if not l.startswith('#')]
+
+        cleanup_lines = getattr(settings, 'CLEANUP_CODE')
 
         initial_msg = {'robot': str(self.id), 'message': 'Connecting to robot...'}
         self.websocket_group.send(
@@ -65,9 +69,6 @@ class RobotTerminal(models.Model):
             ssh.PROMPT = '>{3}|\.{3}'
             ssh.sendline('python')
             ssh.prompt()
-
-            lines[-1] += '\n'
-            lines = [l for l in lines if not l.startswith('#')]
 
             for line in lines:
                 ssh.send(line)
