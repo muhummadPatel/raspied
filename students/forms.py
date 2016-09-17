@@ -12,6 +12,7 @@ User = get_user_model()
 
 class ExclusiveRegistrationForm(RegistrationForm):
     def clean(self):
+        # TODO: try catch KeyError here to avoid empty form error
         form_username = self.cleaned_data['username']
         try:
             # If this runs without raising an exception, then the username is in
