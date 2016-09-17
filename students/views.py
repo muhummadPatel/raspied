@@ -30,7 +30,7 @@ def home(request):
         robots = RobotTerminal.objects.order_by("title")
         context['robots'] = robots
 
-        context['streaming_server_ip'] = getattr(settings, 'STREAMING_SERVER_IP', '105.225.158.228')
+        context['streaming_server_ip'] = getattr(settings, 'STREAMING_SERVER_IP')
         return render(request, 'students/home.html', context)
 
     elif request.method == 'POST':
