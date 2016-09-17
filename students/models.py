@@ -67,7 +67,6 @@ class RobotTerminal(models.Model):
             ssh.prompt()
 
             lines[-1] += '\n'
-            print lines
 
             for line in lines:
                 ssh.send(line)
