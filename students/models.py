@@ -51,7 +51,7 @@ class RobotTerminal(models.Model):
 
         cleanup_lines = getattr(settings, 'CLEANUP_CODE')
 
-        initial_msg = {'robot': str(self.id), 'message': 'Connecting to robot...'}
+        initial_msg = {'robot': str(self.id), 'message': 'Connecting to robot...\n'}
         self.websocket_group.send(
             {"text": json.dumps(initial_msg)}
         )
@@ -94,7 +94,7 @@ class RobotTerminal(models.Model):
 
             ssh.logout()
         except pxssh.ExceptionPxssh as e:
-            output_message = "Could not connect to the robot."
+            output_message = "Could not connect to the robot.\n"
             print(e)
 
         final_msg = {'robot': str(self.id), 'message': output_message}
