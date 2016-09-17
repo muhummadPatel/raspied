@@ -236,6 +236,11 @@ STREAMING_SERVER_IP = '105.226.75.112'
 BOOKING_INTERVAL = 3600
 USER_BOOKINGS_PER_MONTH = 5
 
+ROBOT_HOSTNAME = secrets.ROBOT_HOSTNAME
+ROBOT_USERNAME = secrets.ROBOT_USERNAME
+ROBOT_PWD = secrets.ROBOT_PWD
+ENFORCE_BOOKINGS = True  # only allow the booked user (or admin) to upload code during each slot
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
