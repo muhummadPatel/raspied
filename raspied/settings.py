@@ -224,6 +224,12 @@ PIPELINE = {
             ),
             'output_filename': 'js/moment_js.min.js',
         },
+        'reconnectingwebsocket_js': {
+            'source_filenames': (
+                'raspied/bower_components/reconnectingWebsocket/reconnecting-websocket.min.js',
+            ),
+            'output_filename': 'js/reconnectingwebsocket_js.min.js',
+        },
     },
 }
 
