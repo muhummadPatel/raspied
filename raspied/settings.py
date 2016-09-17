@@ -236,7 +236,7 @@ PIPELINE = {
 LOGIN_URL = '/students/accounts/login/'
 LOGIN_REDIRECT_URL = '/students/home/'
 
-STREAMING_SERVER_IP = '105.226.75.112'
+STREAMING_SERVER_IP = secrets.STREAMING_SERVER_IP
 
 # Duration of a bookable session in seconds
 BOOKING_INTERVAL = 3600
