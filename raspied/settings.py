@@ -245,6 +245,11 @@ USER_BOOKINGS_PER_MONTH = 5
 ROBOT_HOSTNAME = secrets.ROBOT_HOSTNAME
 ROBOT_USERNAME = secrets.ROBOT_USERNAME
 ROBOT_PWD = secrets.ROBOT_PWD
+CLEANUP_CODE = (
+    'from RobotModule import *\n',
+    'r = Robot()\n',
+    'r.reset()\n'
+)
 ENFORCE_BOOKINGS = True  # only allow the booked user (or admin) to upload code during each slot
 
 LOGGING = {

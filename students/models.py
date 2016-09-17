@@ -79,6 +79,10 @@ class RobotTerminal(models.Model):
                     {"text": json.dumps(fb)}
                 )
 
+            for line in cleanup_lines:
+                ssh.send(line)
+                ssh.prompt()
+
             ssh.PROMPT = '$'
             ssh.sendline('quit()')
             ssh.prompt()
