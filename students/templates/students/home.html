@@ -243,6 +243,9 @@
             "robot": $("#terminal-output").attr("data-robot-id"),
             "message": user_script
           }));
+
+          $("ul.tabs").tabs("select_tab", "output-tab");
+
           return false;
         });
 
