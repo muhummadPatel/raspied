@@ -11,6 +11,12 @@
       background-color: lightgrey;
     }
 
+    #video-help {
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+      color: lightgrey;
+    }
+
     #editor {
         min-height: 500px;
     }
@@ -85,6 +91,9 @@
 
         <div id="output-tab" class="col s12">
           <div class="col s12 center">
+            <p id="video-help">
+              Viewing live video stream of robot
+            </p>
             <canvas id="videoCanvas" width="320" height="240">
               <p>
                 Please use a browser that supports the Canvas Element, like
@@ -139,9 +148,18 @@
 {% block extra_js_b %}
   {% javascript 'jsmpg_js' %}
   <script type="text/javascript">
+    var video_connection_error_timeout;
+
     $(document).ready(function(){
         // Setup the WebSocket connection and start the player
         var client = new WebSocket("ws://{{streaming_server_ip}}:8084/");
+
+        client.onclose = function(){
+          $("#video-help").text("Live video stream of the robot disconnected");
+        };
+        client.onerror = function(){
+          $("#video-help").text("Could not connect to the live video stream of the robot");
+        };
 
         // Don't do a jquery lookup for canvas. We need the actual element, not a jquery object
         var canvas = document.getElementById("videoCanvas");
