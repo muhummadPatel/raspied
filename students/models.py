@@ -29,7 +29,7 @@ class Booking(models.Model):
     end_time = models.DateTimeField(blank=False)
 
     def __str__(self):
-        return "%s: %s - %s" % (self.user, self.start_time, self.end_time)
+        return '%s: %s - %s' % (self.user, self.start_time, self.end_time)
 
 
 class RobotTerminal(models.Model):
@@ -42,7 +42,7 @@ class RobotTerminal(models.Model):
     @property
     def websocket_group(self):
         # The group that channels need to subscribe to for messages
-        return Group("robot-%s" % self.id)
+        return Group('robot-%s' % self.id)
 
     def send_command(self, command, user):
         lines = StringIO(command).readlines()
@@ -53,7 +53,7 @@ class RobotTerminal(models.Model):
 
         initial_msg = {'robot': str(self.id), 'message': 'Connecting to robot...\n'}
         self.websocket_group.send(
-            {"text": json.dumps(initial_msg)}
+            {'text': json.dumps(initial_msg)}
         )
 
         try:
@@ -76,7 +76,7 @@ class RobotTerminal(models.Model):
                 output_message = '... ' + ssh.before + '\n'
                 fb = {'robot': str(self.id), 'message': output_message}
                 self.websocket_group.send(
-                    {"text": json.dumps(fb)}
+                    {'text': json.dumps(fb)}
                 )
 
             for line in cleanup_lines:
@@ -89,15 +89,15 @@ class RobotTerminal(models.Model):
             output_message = 'DONE\n'
             fb = {'robot': str(self.id), 'message': output_message}
             self.websocket_group.send(
-                {"text": json.dumps(fb)}
+                {'text': json.dumps(fb)}
             )
 
             ssh.logout()
         except pxssh.ExceptionPxssh as e:
-            output_message = "Could not connect to the robot.\n"
+            output_message = 'Could not connect to the robot.\n'
             print(e)
 
         final_msg = {'robot': str(self.id), 'message': output_message}
         self.websocket_group.send(
-            {"text": json.dumps(final_msg)}
+            {'text': json.dumps(final_msg)}
         )

@@ -37,7 +37,7 @@ def home(request):
 
     elif request.method == 'POST':
         if 'uploaded_file' not in request.FILES:
-            context['user_script'] = "Could not upload file"
+            context['user_script'] = 'Could not upload file'
             return render(request, 'students/home.html', context)
 
         contents = request.FILES['uploaded_file'].read()
@@ -121,7 +121,7 @@ def booking_listall(request, booking_date):
 @login_required
 @require_http_methods(['POST'])
 def booking_delete(request, booking_id):
-    print "received POST to delete %s" % (booking_id)
+    print 'received POST to delete %s' % (booking_id)
 
     # get the booking to be deleted and make sure that it exists, is owned by the requesting user, and is in the future
     curr_time = datetime.now()

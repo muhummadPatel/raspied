@@ -62,12 +62,12 @@ ROOT_URLCONF = 'raspied.urls'
 redis_host = os.environ.get('REDIS_HOST', 'localhost')
 
 CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "asgi_redis.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [(redis_host, 6379)],
+    'default': {
+        'BACKEND': 'asgi_redis.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [(redis_host, 6379)],
         },
-        "ROUTING": "raspied.routing.channel_routing",
+        'ROUTING': 'raspied.routing.channel_routing',
     },
 }
 
@@ -257,8 +257,8 @@ LOGGING = {
     'disable_existing_loggers': False,
     'formatters': {
         'verbose': {
-            'format': "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
-            'datefmt': "%d/%b/%Y %H:%M:%S"
+            'format': '[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s',
+            'datefmt': '%d/%b/%Y %H:%M:%S'
         },
         'simple': {
             'format': '%(levelname)s %(message)s'
