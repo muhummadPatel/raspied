@@ -190,7 +190,7 @@ PIPELINE = {
         },
         'jsmpg_js': {
             'source_filenames': (
-                'students/js/jsmpg.js',
+                'raspied/bower_components/jsmpeg/jsmpg.js',
             ),
             'output_filename': 'js/jsmpg_js.min.js',
         },
