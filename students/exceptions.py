@@ -8,7 +8,7 @@ class ClientError(Exception):
 
     def send_to(self, channel):
         channel.send({
-            "text": json.dumps({
-                "error": self.code,
+            'text': json.dumps({
+                'error': self.code,
             }),
         })
