@@ -150,6 +150,7 @@
         var terminal_output = ace.edit("terminal-output");
         terminal_output.setTheme("ace/theme/monokai");
         terminal_output.setReadOnly(true);
+        terminal_output.setShowPrintMargin(false);
         terminal_output.getSession().setMode("ace/mode/text");
         terminal_output.getSession().setTabSize(4);
         terminal_output.getSession().setUseSoftTabs(true);
