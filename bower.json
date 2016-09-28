@@ -11,6 +11,7 @@
     "pickadate": "^3.5.6",
     "moment": "^2.14.1",
     "reconnectingWebsocket": "^1.0.0",
-    "jsmpeg": "jsmpg#*"
+    "jsmpeg": "jsmpg#*",
+    "hopscotch": "^0.2.6"
   }
 }

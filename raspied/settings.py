@@ -172,6 +172,12 @@ PIPELINE = {
             ),
             'output_filename': 'css/pickadate_css.min.css',
         },
+        'hopscotch_css': {
+            'source_filenames': (
+              'raspied/bower_components/hopscotch/dist/css/hopscotch.min.css',
+            ),
+            'output_filename': 'css/hopscotch_css.min.css',
+        },
     },
     'JAVASCRIPT': {
         'libs_js': {
@@ -229,6 +235,12 @@ PIPELINE = {
                 'raspied/bower_components/reconnectingWebsocket/reconnecting-websocket.min.js',
             ),
             'output_filename': 'js/reconnectingwebsocket_js.min.js',
+        },
+        'hopscotch_js': {
+            'source_filenames': (
+                'raspied/bower_components/hopscotch/dist/js/hopscotch.min.js',
+            ),
+            'output_filename': 'js/hopscotch_js.min.js',
         },
     },
 }
