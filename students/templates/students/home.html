@@ -2,6 +2,7 @@
 {% load staticfiles pipeline %}
 
 {% block extra_css_b %}
+  {% stylesheet 'hopscotch_css' %}
   <style type="text/css">
     #videoCanvas {
       /* Always stretch the canvas to 640x480, regardless of its
@@ -58,9 +59,9 @@
 {% endblock extra_css_b %}
 
 {% block nav_ul_desktop_b %}
-  <li><a href="#" class="current-page-nav">Home</li>
-  <li><a href="{% url 'students:booking' %}">Make a Booking</li>
-  <li><a href="{% url 'students:auth_logout' %}">Logout</a></li>
+  <li><a id="nav-home" href="#" class="current-page-nav">Home</li>
+  <li><a id="nav-booking" href="{% url 'students:booking' %}">Make a Booking</li>
+  <li><a id="nav-logout" href="{% url 'students:auth_logout' %}">Logout</a></li>
   <li> &nbsp;&#124;&nbsp; </li>
   <li><strong>{{ user.get_username }}</strong> </li>
 {% endblock nav_ul_desktop_b %}
@@ -77,8 +78,8 @@
     <div class="row z-depth-1 tabbed-pane">
       <div class="col s12">
         <ul class="tabs">
-          <li class="tab col s4"><a class="active" href="#editor-tab">Code editor</a></li>
-          <li class="tab col s4"><a href="#output-tab">Output</a></li>
+          <li id="editor-tab-link" class="tab col s4"><a class="active" href="#editor-tab">Code editor</a></li>
+          <li id="output-tab-link" class="tab col s4"><a href="#output-tab">Output</a></li>
         </ul>
         <br>
 
@@ -91,10 +92,10 @@
               <a id="download-script-btn" class="waves-effect waves-light btn orange" href="javascript:void(0)">Save Script</a>
             </div>
             <div class="button-container">
-                <a class="waves-effect waves-light btn modal-trigger orange" href="#file-upload-modal">Open Script</a>
+                <a id="open-script-btn" class="waves-effect waves-light btn modal-trigger orange" href="#file-upload-modal">Open Script</a>
             </div>
             <div class="button-container">
-                <a class="waves-effect waves-light btn modal-trigger orange" href="https://github.com/Ruenzic/HonoursProject/wiki" target="_blank">RASPIED Wiki</a>
+                <a id="view-wiki-btn" class="waves-effect waves-light btn modal-trigger orange" href="https://github.com/Ruenzic/HonoursProject/wiki" target="_blank">RASPIED Wiki</a>
             </div>
           </div>
 
@@ -156,6 +157,10 @@
     </form>
   </div>
 {% endblock main_body_b %}
+
+{% block extra_footer_b %}
+  <a id="take-tour-btn" class="waves-effect waves-light orange btn">Take the tour</a>
+{% endblock extra_footer_b %}
 
 {% block extra_js_b %}
   {% javascript 'jsmpg_js' %}
@@ -283,4 +288,7 @@
       }
     });
   </script>
+
+  {% javascript 'hopscotch_js' %}
+  {% javascript 'tour_js' %}
 {% endblock extra_js_b %}

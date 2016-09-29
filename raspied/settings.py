@@ -242,6 +242,12 @@ PIPELINE = {
             ),
             'output_filename': 'js/hopscotch_js.min.js',
         },
+        'tour_js': {
+            'source_filenames': (
+                'students/js/tour.js',
+            ),
+            'output_filename': 'js/tour_js.min.js',
+        },
     },
 }
 

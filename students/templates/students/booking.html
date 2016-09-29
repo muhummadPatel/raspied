@@ -2,6 +2,7 @@
 {% load staticfiles pipeline %}
 
 {% block extra_css_b %}
+  {% stylesheet 'hopscotch_css' %}
   {% stylesheet 'pickadate_css' %}
   <style type="text/css">
     .picker__frame {
@@ -34,11 +35,11 @@
 {% endblock extra_css_b %}
 
 {% block nav_ul_desktop_b %}
-    <li><a href="{% url 'students:home' %}">Home</li>
-    <li><a href="#" class="current-page-nav">Make a Booking</li>
-    <li><a href="{% url 'students:auth_logout' %}">Logout</a></li>
-    <li> &nbsp;&#124;&nbsp; </li>
-    <li><strong>{{ user.get_username }}</strong> </li>
+  <li><a id="nav-home" href="{% url 'students:home' %}">Home</li>
+  <li><a id="nav-booking" href="#" class="current-page-nav">Make a Booking</li>
+  <li><a id="nav-logout" href="{% url 'students:auth_logout' %}">Logout</a></li>
+  <li> &nbsp;&#124;&nbsp; </li>
+  <li><strong>{{ user.get_username }}</strong> </li>
 {% endblock nav_ul_desktop_b %}
 {% block nav_ul_mobile_b %}
   <li><a href="{% url 'students:home' %}">Home</li>
@@ -53,7 +54,7 @@
 
     <div class="row">
       <div class="col s7">
-        <ul class="collection with-header">
+        <ul id="user-bookings-card" class="collection with-header">
           <li class="collection-header"><h4>Bookings</h4></li>
           <div id="user-bookings-list">
             <!-- populated by ajax request -->
@@ -219,4 +220,7 @@
       init_booking_list();
     });
   </script>
+
+  {% javascript 'hopscotch_js' %}
+  {% javascript 'tour_js' %}
 {% endblock extra_js_b %}
