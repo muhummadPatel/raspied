@@ -58,9 +58,9 @@
 {% endblock extra_css_b %}
 
 {% block nav_ul_desktop_b %}
-  <li><a href="#" class="current-page-nav">Home</li>
-  <li><a href="{% url 'students:booking' %}">Make a Booking</li>
-  <li><a href="{% url 'students:auth_logout' %}">Logout</a></li>
+  <li><a id="nav-home" href="#" class="current-page-nav">Home</li>
+  <li><a id="nav-booking" href="{% url 'students:booking' %}">Make a Booking</li>
+  <li><a id="nav-logout" href="{% url 'students:auth_logout' %}">Logout</a></li>
   <li> &nbsp;&#124;&nbsp; </li>
   <li><strong>{{ user.get_username }}</strong> </li>
 {% endblock nav_ul_desktop_b %}
