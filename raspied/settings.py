@@ -254,6 +254,12 @@ PIPELINE = {
             ),
             'output_filename': 'js/home_js.min.js',
         },
+        'booking_js': {
+            'source_filenames': (
+                'students/js/booking.js',
+            ),
+            'output_filename': 'js/booking_js.min.js',
+        },
     },
 }
 
