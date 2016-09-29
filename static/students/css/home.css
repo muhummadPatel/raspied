@@ -1,0 +1,51 @@
+#videoCanvas {
+  /* Always stretch the canvas to 640x480, regardless of its
+  internal size. */
+  width: 640px;
+  height: 480px;
+  background-color: lightgrey;
+}
+
+#video-help {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  color: lightgrey;
+}
+
+#editor {
+  min-height: 500px;
+}
+
+#terminal-output {
+  min-height: 300px;
+}
+
+div.button-row {
+  padding-bottom: 1rem  !important;
+}
+
+div.button-row div.button-container {
+  padding-left: 1rem     !important;
+  padding-right: 1rem  !important;
+  float: right;
+}
+
+.tabbed-pane {
+  padding-bottom: 1.5rem;
+}
+
+.tabs .tab a {
+  color: #009688;
+}
+
+.tabs .tab a:hover {
+  color: #b2dfdb;
+}
+
+.tabs .indicator {
+  background-color: #009688;
+}
+
+a.current-page-nav {
+  background-color: rgba(0, 0, 0, 0.1);
+}

@@ -178,6 +178,12 @@ PIPELINE = {
             ),
             'output_filename': 'css/hopscotch_css.min.css',
         },
+        'home_css': {
+            'source_filenames': (
+              'students/css/home.css',
+            ),
+            'output_filename': 'css/home_css.min.css',
+        },
     },
     'JAVASCRIPT': {
         'libs_js': {
