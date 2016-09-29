@@ -1,0 +1,26 @@
+.picker__frame {
+  overflow-y: auto;
+}
+
+.collection-item.avatar {
+  min-height: auto    !important;
+  padding-left: 30px  !important;
+}
+
+li.collection-item.avatar span.title {
+  font-size: large    !important;
+}
+
+li.collection-item.avatar p.subtext {
+  color: darkgrey;
+}
+
+hr.header-sep {
+  height: 0;
+  border: 0;
+  border-top: 1px solid gainsboro;
+}
+
+a.current-page-nav {
+  background-color: rgba(0, 0, 0, 0.1);
+}

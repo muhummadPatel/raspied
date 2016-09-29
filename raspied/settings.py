@@ -184,6 +184,12 @@ PIPELINE = {
             ),
             'output_filename': 'css/home_css.min.css',
         },
+        'booking_css': {
+            'source_filenames': (
+              'students/css/booking.css',
+            ),
+            'output_filename': 'css/booking_css.min.css',
+        },
     },
     'JAVASCRIPT': {
         'libs_js': {
