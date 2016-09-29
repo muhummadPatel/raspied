@@ -2,6 +2,7 @@
 {% load staticfiles pipeline %}
 
 {% block extra_css_b %}
+  {% stylesheet 'hopscotch_css' %}
   {% stylesheet 'pickadate_css' %}
   <style type="text/css">
     .picker__frame {
@@ -219,4 +220,7 @@
       init_booking_list();
     });
   </script>
+
+  {% javascript 'hopscotch_js' %}
+  {% javascript 'tour_js' %}
 {% endblock extra_js_b %}
