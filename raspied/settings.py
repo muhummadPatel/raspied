@@ -288,7 +288,7 @@ ROBOT_HOSTNAME = secrets.ROBOT_HOSTNAME
 ROBOT_USERNAME = secrets.ROBOT_USERNAME
 ROBOT_PWD = secrets.ROBOT_PWD
 CLEANUP_CODE = (
-    'from RobotModule import *\n',
+    'from Robot import *\n',
     'r = Robot()\n',
     'r.reset()\n'
 )
