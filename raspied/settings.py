@@ -287,7 +287,13 @@ USER_BOOKINGS_PER_MONTH = 5
 ROBOT_HOSTNAME = secrets.ROBOT_HOSTNAME
 ROBOT_USERNAME = secrets.ROBOT_USERNAME
 ROBOT_PWD = secrets.ROBOT_PWD
+# CLEANUP_CODE = (
+#     'from Robot import *\n',
+#     'r = Robot()\n',
+#     'r.reset()\n'
+# )
 CLEANUP_CODE = (
+    '\n\n',
     'from Robot import *\n',
     'r = Robot()\n',
     'r.reset()\n'
