@@ -47,6 +47,7 @@ class RobotTerminal(models.Model):
     def send_command(self, command, user):
         lines = StringIO(command).readlines()
         lines[-1] += '\n'
+        lines += ['\n\n\n', 'print ""\n']
         lines = [l for l in lines if not l.startswith('#')]
 
         cleanup_lines = getattr(settings, 'CLEANUP_CODE')
