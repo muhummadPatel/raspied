@@ -272,6 +272,12 @@ PIPELINE = {
             ),
             'output_filename': 'js/booking_js.min.js',
         },
+        'registration_form_js': {
+            'source_filenames': (
+                'registration/js/registration_form.js',
+            ),
+            'output_filename': 'js/registration_form_js.min.js',
+        },
     },
 }
 

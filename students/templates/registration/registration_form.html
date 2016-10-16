@@ -1,4 +1,5 @@
 {% extends "base_page.html" %}
+{% load staticfiles pipeline %}
 
 {% block title_b%} Raspied - Sign Up {% endblock title_b %}
 
@@ -43,3 +44,7 @@
   </div>
 </div>
 {% endblock main_body_b %}
+
+{% block extra_js_b %}
+  {% javascript 'registration_form_js' %}
+{% endblock extra_js_b %}
