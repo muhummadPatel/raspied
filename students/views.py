@@ -109,7 +109,7 @@ def booking(request):
 @require_http_methods(['GET'])
 def booking_list(request):
     today = datetime.now()
-    today.replace(minute=0, second=0, microsecond=0)
+    today = today.replace(minute=0, second=0, microsecond=0)
 
     # get all the user bookings from this hour onwards
     user_bookings = Booking.objects.filter(user=request.user, start_time__gte=today).order_by('start_time')
