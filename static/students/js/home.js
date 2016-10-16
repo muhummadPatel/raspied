@@ -30,6 +30,18 @@ var init_code_editors = function(){
     terminal_output.getSession().setTabSize(4);
     terminal_output.getSession().setUseSoftTabs(true);
   }
+
+
+  var cached_user_script = localStorage.getItem("cached_user_script");
+  if(cached_user_script){
+    editor.setValue(cached_user_script);
+    editor.focus();
+    editor.gotoLine(0);
+  }else{
+    editor.setValue($("#boilerplate-data").html());
+    editor.focus();
+    editor.gotoLine(0);
+  }
 };
 
 var init_buttons = function(){
@@ -44,6 +56,7 @@ var init_buttons = function(){
   $("#new-script-btn").click(function(){
     var editor = ace.edit("editor").session;
     editor.setValue($("#boilerplate-data").html());
+    localStorage.removeItem("cached_user_script");
   });
 };
 
@@ -123,7 +136,6 @@ var init_robot_terminal = function(){
         "robot": $("#terminal-output").attr("data-robot-id"),
         "message": "kill user script"
       }));
-      console.log("SENT KILL SIGNAL");
 
       return false;
     });
@@ -132,9 +144,22 @@ var init_robot_terminal = function(){
   }
 };
 
+var cache_script = function(){
+  var editor = ace.edit("editor");
+  var user_script = editor.getValue();
+  localStorage.setItem("cached_user_script", user_script);
+};
+
+var schedule_user_script_caching = function(millis){
+  window.setInterval(function(){
+    cache_script();
+  }, millis);
+};
+
 $(function(){
   init_video_stream();
   init_code_editors();
   init_robot_terminal();
   init_buttons();
+  schedule_user_script_caching(10000);
 });
