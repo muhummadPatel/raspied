@@ -137,9 +137,11 @@
   {% javascript 'hopscotch_js' %}
 
   <script type="text/javascript">
-    //initialise global streaming_server_ip var for use in home_js. We need to keep this here to
-    //capture the value from the context provided to the template.
+    //initialise global vars for use in other included custom js files. We need to
+    //keep these here to capture the values from the context provided to the template.
+
     var streaming_server_ip = "{{streaming_server_ip}}";
+    var is_first_login = {% if is_first_login %}true{% else %}false{% endif %};
   </script>
   {% javascript 'home_js' %}
   {% javascript 'tour_js' %}

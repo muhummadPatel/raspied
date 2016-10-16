@@ -23,6 +23,10 @@ User = get_user_model()
 class ExclusiveRegistrationView(RegistrationView):
     form_class = ExclusiveRegistrationForm
 
+    def get_success_url(self, user):
+        self.request.session['is_first_login'] = True
+        return 'students:home'
+
 
 def custom_login(request):
     return default_login_view(request, authentication_form=CustomAuthenticationForm)
@@ -32,7 +36,12 @@ def custom_login(request):
 @require_http_methods(['GET', 'POST'])
 def home(request):
     context = {}
+
     if request.method == 'GET':
+        if 'is_first_login' in request.session:
+            context['is_first_login'] = request.session['is_first_login']
+            del request.session['is_first_login']
+
         robot = get_booked_robot(request.user)
         if robot:
             context['robot'] = robot

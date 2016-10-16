@@ -114,6 +114,10 @@ $(function(){
     $("#take-tour-btn").click(function(){
       hopscotch.startTour(tour);
     });
+
+    if(is_first_login === true){
+      hopscotch.startTour(tour);
+    }
   }else if(window.location.href.includes("booking")){
     if (hopscotch.getState() === "raspied-tour:12") {
       hopscotch.startTour(tour);
