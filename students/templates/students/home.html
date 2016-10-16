@@ -8,6 +8,7 @@
 {% endblock extra_css_b %}
 
 {% block nav_ul_desktop_b %}
+  <li><a id="take-tour-btn" class="waves-effect waves-light teal lighten-2 btn">Take the tour</a></li>
   <li><a id="nav-home" href="#" class="current-page-nav">Home</a></li>
   <li><a id="nav-booking" href="{% url 'students:booking' %}">Make a Booking</a></li>
   <li><a id="nav-logout" href="{% url 'students:auth_logout' %}">Logout</a></li>
@@ -122,8 +123,6 @@
 {% endblock main_body_b %}
 
 {% block extra_footer_b %}
-  <a id="take-tour-btn" class="waves-effect waves-light orange btn">Take the tour</a>
-
   {% if user.is_staff %}
     <a class="waves-effect waves-light orange btn" href="{% url 'admin:index' %}">Admin Site</a>
   {% endif %}
