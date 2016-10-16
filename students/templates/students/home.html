@@ -51,7 +51,7 @@
             </div>
           </div>
 
-          <div id="editor" class="col s12">{% if user_script %}{{user_script}}{% else %}{% include 'students/boilerplate.html' %}{% endif %}</div>
+          <div id="editor" class="col s12"></div>
         </div>
 
         <div id="output-tab" class="col s12">
@@ -120,6 +120,7 @@
   </div>
 
   <p id="boilerplate-data" style="display:none">{% include 'students/boilerplate.html' %}</p>
+  <p id="uploaded-code-data" style="display:none">{{user_script}}</p>
 {% endblock main_body_b %}
 
 {% block extra_footer_b %}
@@ -139,8 +140,13 @@
     //initialise global vars for use in other included custom js files. We need to
     //keep these here to capture the values from the context provided to the template.
 
+    var username = "{{user.username}}";
     var streaming_server_ip = "{{streaming_server_ip}}";
     var is_first_login = {% if is_first_login %}true{% else %}false{% endif %};
+    {% if user_script %}
+      localStorage.setItem("cached_user_script_" + username, $("#uploaded-code-data").html());
+      $("#uploaded-code-data").empty();
+    {% endif %};
   </script>
   {% javascript 'home_js' %}
   {% javascript 'tour_js' %}
