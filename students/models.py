@@ -44,11 +44,19 @@ class RobotTerminal(models.Model):
         # The group that channels need to subscribe to for messages
         return Group('robot-%s' % self.id)
 
+    def sanitize_code_line(self, line):
+        if line.startswith('#'):
+            return None
+        elif line.strip():
+            return line
+        else:
+            return '\n'
+
     def send_command(self, command, user):
         lines = StringIO(command).readlines()
         lines[-1] += '\n'
         lines += ['\n\n\n', 'print ""\n']
-        lines = [l for l in lines if not l.startswith('#')]
+        lines = [self.sanitize_code_line(l) for l in lines]
 
         cleanup_lines = getattr(settings, 'CLEANUP_CODE')
 
