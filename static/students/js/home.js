@@ -111,7 +111,18 @@ var init_robot_terminal = function(){
       return false;
     });
 
-    $(".run-script-btn").toggleClass("disabled", false);
+    $("#kill-script-btn").on("click", function(){
+      socket.send(JSON.stringify({
+        "command": "kill",
+        "robot": $("#terminal-output").attr("data-robot-id"),
+        "message": "kill user script"
+      }));
+      console.log("SENT KILL SIGNAL");
+
+      return false;
+    });
+
+    $("[class*=script-btn]").toggleClass("disabled", false);
   }
 };
 

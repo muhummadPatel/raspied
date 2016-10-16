@@ -82,3 +82,17 @@ def robot_terminal_send(message):
         robot.send_command(message['message'], message.user)
     except ClientError as e:
         e.send_to(message.reply_channel)
+
+
+@channel_session_user
+def robot_terminal_kill(message):
+    try:
+        # the user must be have joined the robot terminal in order to kill the script
+        if int(message['robot']) not in message.channel_session['robot']:
+            raise ClientError('ROBOT_ACCESS_DENIED')
+
+        # get the requested robot terminal and request for the script to be killed
+        robot = get_robot_terminal_or_error(message['robot'], message.user)
+        robot.send_halt()
+    except ClientError as e:
+        e.send_to(message.reply_channel)

@@ -52,6 +52,43 @@ class RobotTerminal(models.Model):
         else:
             return '\n'
 
+    def send_halt(self):
+        try:
+            output_message = 'Attempting to kill the code...\n'
+            fb = {'robot': str(self.id), 'message': output_message}
+            self.websocket_group.send(
+                {'text': json.dumps(fb)}
+            )
+            ssh = pxssh.pxssh()
+            hostname = getattr(settings, 'ROBOT_HOSTNAME')
+            username = getattr(settings, 'ROBOT_USERNAME')
+            password = getattr(settings, 'ROBOT_PWD')
+            ssh.login(hostname, username, password)
+
+            ssh.sendline("kill `ps -ef | awk '/[p]ython/{print $2}'`")
+            ssh.prompt()
+
+            ssh.sendline("cd HonoursProject")
+            ssh.prompt()
+
+            ssh.sendline("python recover.py")
+            ssh.prompt()
+
+            output_message = 'Code Halted\nDONE\n'
+            fb = {'robot': str(self.id), 'message': output_message}
+            self.websocket_group.send(
+                {'text': json.dumps(fb)}
+            )
+
+            ssh.logout()
+        except pxssh.ExceptionPxssh as e:
+            output_message = 'Could not connect to the robot.\nDONE\n'
+            fb = {'robot': str(self.id), 'message': output_message}
+            self.websocket_group.send(
+                {'text': json.dumps(fb)}
+            )
+            print(e)
+
     def send_command(self, command, user):
         lines = StringIO(command).readlines()
         lines[-1] += '\n'
@@ -103,7 +140,11 @@ class RobotTerminal(models.Model):
 
             ssh.logout()
         except pxssh.ExceptionPxssh as e:
-            output_message = 'Could not connect to the robot.\n'
+            output_message = 'Could not connect to the robot.\nDONE\n'
+            fb = {'robot': str(self.id), 'message': output_message}
+            self.websocket_group.send(
+                {'text': json.dumps(fb)}
+            )
             print(e)
 
         final_msg = {'robot': str(self.id), 'message': output_message}
