@@ -11,6 +11,10 @@ User = get_user_model()
 
 
 class ExclusiveRegistrationForm(RegistrationForm):
+    def __init__(self, *args, **kwargs):
+        super(ExclusiveRegistrationForm, self).__init__(*args, **kwargs)
+        self.fields['username'].label = 'Student number'
+
     def clean(self):
         # TODO: try catch KeyError here to avoid empty form error
         form_username = self.cleaned_data['username']
