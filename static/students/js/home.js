@@ -49,8 +49,10 @@ var init_buttons = function(){
     var editor = ace.edit("editor");
     var user_script = editor.getValue();
 
+    var filename = prompt("Please enter the filename (with a .py extension):", "raspied_script.py");
+
     var blob = new Blob([user_script], {type: "text/plain;charset=utf-8"});
-    saveAs(blob, "raspied_script.py");
+    saveAs(blob, filename);
   });
 
   $("#new-script-btn").click(function(){
