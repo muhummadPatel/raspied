@@ -9,6 +9,9 @@
 
 {% block nav_ul_desktop_b %}
   <li><a id="take-tour-btn" class="waves-effect waves-light teal lighten-2 btn">Take the tour</a></li>
+  {% if user.is_staff %}
+    <li><a href="{% url 'admin:index' %}">Admin Site</a></li>
+  {% endif %}
   <li><a id="nav-home" href="#" class="current-page-nav">Home</a></li>
   <li><a id="nav-booking" href="{% url 'students:booking' %}">Make a Booking</a></li>
   <li><a id="nav-logout" href="{% url 'students:auth_logout' %}">Logout</a></li>
@@ -17,6 +20,9 @@
 {% endblock nav_ul_desktop_b %}
 {% block nav_ul_mobile_b %}
   <li><strong>{{ user.get_username }}</strong> </li>
+  {% if user.is_staff %}
+    <li><a href="{% url 'admin:index' %}">Admin Site</a></li>
+  {% endif %}
   <li><a href="#" class="current-page-nav">Home</a></li>
   <li><a href="{% url 'students:booking' %}">Make a Booking</a></li>
   <li><a href="{% url 'students:auth_logout' %}">Logout</a></li>
@@ -124,9 +130,6 @@
 {% endblock main_body_b %}
 
 {% block extra_footer_b %}
-  {% if user.is_staff %}
-    <a class="waves-effect waves-light orange btn" href="{% url 'admin:index' %}">Admin Site</a>
-  {% endif %}
 {% endblock extra_footer_b %}
 
 {% block extra_js_b %}
