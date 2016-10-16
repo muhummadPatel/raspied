@@ -19,7 +19,6 @@
   <li><strong>{{ user.get_username }}</strong> </li>
 {% endblock nav_ul_desktop_b %}
 {% block nav_ul_mobile_b %}
-  <li><strong>{{ user.get_username }}</strong> </li>
   {% if user.is_staff %}
     <li><a href="{% url 'admin:index' %}">Admin Site</a></li>
   {% endif %}
