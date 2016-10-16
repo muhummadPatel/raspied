@@ -48,7 +48,7 @@
             </div>
           </div>
 
-          <div id="editor" class="col s12">{% if user_script %}{{user_script}}{% else %}Your code here...{% endif %}</div>
+          <div id="editor" class="col s12">{% if user_script %}{{user_script}}{% else %}{% include 'students/boilerplate.html' %}{% endif %}</div>
         </div>
 
         <div id="output-tab" class="col s12">
