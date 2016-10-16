@@ -116,6 +116,8 @@ var init_robot_terminal = function(){
     };
 
     $(".run-script-btn").on("click", function(){
+      ace.edit("terminal-output").getSession().setValue("");
+
       var editor = ace.edit("editor");
       var user_script = editor.getValue();
 
