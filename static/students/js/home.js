@@ -96,7 +96,7 @@ var init_robot_terminal = function(){
       console.log("Robot terminal socket: socket disconnected");
     };
 
-    $("#run-script-btn").on("click", function(){
+    $(".run-script-btn").on("click", function(){
       var editor = ace.edit("editor");
       var user_script = editor.getValue();
 
@@ -111,7 +111,7 @@ var init_robot_terminal = function(){
       return false;
     });
 
-    $("#run-script-btn").toggleClass("disabled", false);
+    $(".run-script-btn").toggleClass("disabled", false);
   }
 };
 
