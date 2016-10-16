@@ -32,13 +32,18 @@ var init_code_editors = function(){
   }
 };
 
-var init_download_button = function(){
+var init_buttons = function(){
   $("#download-script-btn").click(function(){
     var editor = ace.edit("editor");
     var user_script = editor.getValue();
 
     var blob = new Blob([user_script], {type: "text/plain;charset=utf-8"});
     saveAs(blob, "raspied_script.py");
+  });
+
+  $("#new-script-btn").click(function(){
+    var editor = ace.edit("editor").session;
+    editor.setValue($("#boilerplate-data").html());
   });
 };
 
@@ -113,6 +118,6 @@ var init_robot_terminal = function(){
 $(function(){
   init_video_stream();
   init_code_editors();
-  init_download_button();
   init_robot_terminal();
+  init_buttons();
 });
