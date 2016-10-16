@@ -73,6 +73,12 @@ var init_robot_terminal = function(){
         $("#terminal-output").remove();
         Materialize.toast("Connection to robot closed", 4000);
 
+      }else if(data.code_done){
+        ace.edit("terminal-output").getSession().insert({
+            row: ace.edit("terminal-output").getSession().getLength(),
+            column: 0
+          }, data.message);
+          alert("Program ended, now resetting the robot"); //TODO: maybe use a toast?
       }else if(data.message){
         ace.edit("terminal-output").getSession().insert({
             row: ace.edit("terminal-output").getSession().getLength(),

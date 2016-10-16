@@ -125,6 +125,13 @@ class RobotTerminal(models.Model):
                     {'text': json.dumps(fb)}
                 )
 
+            # NOTE: the code is as yet untested!!!
+            output_message = 'Code execution complete. Now resetting the robot...'
+            fb = {'robot': str(self.id), 'message': output_message, 'code_done': True}
+            self.websocket_group.send(
+                {'text': json.dumps(fb)}
+            )
+
             for line in cleanup_lines:
                 ssh.send(line)
                 ssh.prompt()
