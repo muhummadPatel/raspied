@@ -1,6 +1,7 @@
 var timepicker;
+var datepicker;
 var init_booking_form = function(){
-  $('.datepicker').pickadate({
+  datepicker = $(".datepicker").pickadate({
     onSet: function(){
       update_disabled_timeslots();
       update_booking_form();
@@ -8,7 +9,7 @@ var init_booking_form = function(){
     min: true
   });
 
-  timepicker = $('.timepicker').pickatime({
+  timepicker = $(".timepicker").pickatime({
     onSet: update_booking_form,
     interval: 60,
     format: "HH:i"
@@ -28,6 +29,9 @@ var init_booking_form = function(){
 
       update_booking_list();
       update_disabled_timeslots();
+
+      timepicker.pickatime("picker").clear();
+      datepicker.pickadate("picker").clear();
     }).fail(function(response){
       Materialize.toast("Sorry, failed! " + response.responseText, 4000);
     });
