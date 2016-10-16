@@ -3,6 +3,7 @@ from dateutil import parser as timestring_parser
 from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model, login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import login as default_login_view
 from django.core import serializers
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
@@ -11,7 +12,7 @@ from django.views.decorators.http import require_http_methods
 from registration import signals
 from registration.backends.simple.views import RegistrationView
 
-from .forms import ExclusiveRegistrationForm
+from .forms import CustomAuthenticationForm, ExclusiveRegistrationForm
 from .models import Booking, RobotTerminal
 from .utils import get_booked_robot
 
@@ -21,6 +22,10 @@ User = get_user_model()
 
 class ExclusiveRegistrationView(RegistrationView):
     form_class = ExclusiveRegistrationForm
+
+
+def custom_login(request):
+    return default_login_view(request, authentication_form=CustomAuthenticationForm)
 
 
 @login_required
