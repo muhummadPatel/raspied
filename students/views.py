@@ -36,6 +36,7 @@ def custom_login(request):
 @require_http_methods(['GET', 'POST'])
 def home(request):
     context = {}
+    context['streaming_server_ip'] = getattr(settings, 'STREAMING_SERVER_IP')
 
     if request.method == 'GET':
         if 'is_first_login' in request.session:
@@ -46,7 +47,6 @@ def home(request):
         if robot:
             context['robot'] = robot
 
-        context['streaming_server_ip'] = getattr(settings, 'STREAMING_SERVER_IP')
         return render(request, 'students/home.html', context)
 
     elif request.method == 'POST':
