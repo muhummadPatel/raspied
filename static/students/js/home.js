@@ -60,6 +60,18 @@ var init_buttons = function(){
     editor.setValue($("#boilerplate-data").html());
     localStorage.removeItem("cached_user_script_" + username);
   });
+
+  $("#file-upload-form").on("submit", function(event){
+    event.preventDefault();
+
+    var file = document.getElementById("file-input").files[0];
+    var reader = new FileReader();
+    reader.readAsText(file);
+    reader.onload = function() {
+      var editor = ace.edit("editor").session;
+      editor.setValue(this.result);
+    };
+  });
 };
 
 var init_robot_terminal = function(){

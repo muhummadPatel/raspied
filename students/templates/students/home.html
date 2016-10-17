@@ -98,7 +98,7 @@
 
   <!-- File upload modal -->
   <div id="file-upload-modal" class="modal">
-    <form action="." method="post" enctype="multipart/form-data">
+    <form id="file-upload-form" action="" method="post" enctype="multipart/form-data">
       {% csrf_token %}
 
     <div class="modal-content">
@@ -110,7 +110,7 @@
       <div class="file-field input-field">
         <div class="btn">
           <span>Choose File</span>
-          <input type="file" name="uploaded_file" accept=".py">
+          <input id="file-input" type="file" name="uploaded_file" accept=".py" enctype="multipart/form-data">
         </div>
         <div class="file-path-wrapper">
           <input class="file-path validate" type="text">
@@ -125,7 +125,6 @@
   </div>
 
   <p id="boilerplate-data" style="display:none">{% include 'students/boilerplate.html' %}</p>
-  <p id="uploaded-code-data" style="display:none">{{user_script}}</p>
 {% endblock main_body_b %}
 
 {% block extra_footer_b %}
@@ -145,10 +144,6 @@
     var username = "{{user.username}}";
     var streaming_server_ip = "{{streaming_server_ip}}";
     var is_first_login = {% if is_first_login %}true{% else %}false{% endif %};
-    {% if user_script %}
-      localStorage.setItem("cached_user_script_" + username, $("#uploaded-code-data").html());
-      $("#uploaded-code-data").empty();
-    {% endif %};
   </script>
   {% javascript 'home_js' %}
   {% javascript 'tour_js' %}
