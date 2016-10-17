@@ -101,11 +101,13 @@ var update_booking_list = function(){
         current_time = moment();
         start_time = moment(booking.fields.start_time);
         is_current = start_time.isBefore(current_time)? "current-booking": "";
+        delete_icon = start_time.isBefore(current_time)? "": "<a id=\"delete-booking_" + booking_id + "\" href=\"#\" class=\"secondary-content\"><i class=\"material-icons md-18\">delete</i></a>";
+
         start_time = start_time.format("HH:mm");
         end_time = moment(booking.fields.end_time).format("HH:mm");
         booking_info = start_time + " - " + end_time;
 
-        list_item_html = "<li class=\"collection-item avatar "+ is_current +" \"><div><span class=\"title\">" + date + "</span><p id=\"booking_" + booking_id + "\" class=\"subtext\">" + booking_info + "</p><a id=\"delete-booking_" + booking_id + "\" href=\"#\" class=\"secondary-content\"><i class=\"material-icons md-18\">delete</i></a><div></li>";
+        list_item_html = "<li class=\"collection-item avatar "+ is_current +" \"><div><span class=\"title\">" + date + "</span><p id=\"booking_" + booking_id + "\" class=\"subtext\">" + booking_info + "</p>" + delete_icon + "<div></li>";
         $("#user-bookings-list").append(list_item_html);
       });
     }
