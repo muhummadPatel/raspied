@@ -33,31 +33,20 @@ def custom_login(request):
 
 
 @login_required
-@require_http_methods(['GET', 'POST'])
+@require_http_methods(['GET'])
 def home(request):
     context = {}
     context['streaming_server_ip'] = getattr(settings, 'STREAMING_SERVER_IP')
 
-    if request.method == 'GET':
-        if 'is_first_login' in request.session:
-            context['is_first_login'] = request.session['is_first_login']
-            del request.session['is_first_login']
+    if 'is_first_login' in request.session:
+        context['is_first_login'] = request.session['is_first_login']
+        del request.session['is_first_login']
 
-        robot = get_booked_robot(request.user)
-        if robot:
-            context['robot'] = robot
+    robot = get_booked_robot(request.user)
+    if robot:
+        context['robot'] = robot
 
-        return render(request, 'students/home.html', context)
-
-    elif request.method == 'POST':
-        if 'uploaded_file' not in request.FILES:
-            context['user_script'] = 'Could not upload file'
-            return render(request, 'students/home.html', context)
-
-        contents = request.FILES['uploaded_file'].read()
-        context['user_script'] = contents
-
-        return render(request, 'students/home.html', context)
+    return render(request, 'students/home.html', context)
 
 
 @login_required
