@@ -44,13 +44,32 @@ class RobotTerminal(models.Model):
         # The group that channels need to subscribe to for messages
         return Group('robot-%s' % self.id)
 
-    def sanitize_code_line(self, line):
-        if line.startswith('#'):
-            return None
-        elif line.strip():
-            return line
-        else:
-            return '\n'
+    def get_indent(self, s):
+        for i in range(len(s)):
+            if s[i] != " ":
+                return i
+
+        return 0
+
+    def sanitize_code_lines(self, lines):
+        out = []
+        for i in range(len(lines)):
+            print lines[i]
+            print self.get_indent(lines[i])
+            next_line = ''
+            if i+1 < len(lines):
+                next_line = lines[i+1]
+
+            if lines[i].startswith('#'):
+                pass
+            elif lines[i].strip():
+                out.append(lines[i])
+
+            if self.get_indent(next_line) == 0 and self.get_indent(next_line) < self.get_indent(lines[i]):
+                # we have left an indented block, so send a newline
+                out.append('\n')
+
+        return out
 
     def send_halt(self):
         try:
@@ -92,8 +111,8 @@ class RobotTerminal(models.Model):
     def send_command(self, command, user):
         lines = StringIO(command).readlines()
         lines[-1] += '\n'
-        lines += ['\n\n\n', 'print ""\n']
-        lines = [self.sanitize_code_line(l) for l in lines]
+        lines += ['\n\n\n']
+        lines = self.sanitize_code_lines(lines)
 
         cleanup_lines = getattr(settings, 'CLEANUP_CODE')
 
