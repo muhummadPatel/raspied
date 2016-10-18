@@ -178,6 +178,12 @@ PIPELINE = {
             ),
             'output_filename': 'css/hopscotch_css.min.css',
         },
+        'sweetalert_css': {
+            'source_filenames': (
+                'raspied/bower_components/sweetalert/dist/sweetalert.css',
+            ),
+            'output_filename': 'css/sweetalert_csss.min.css',
+        },
         'home_css': {
             'source_filenames': (
               'students/css/home.css',
@@ -260,6 +266,12 @@ PIPELINE = {
                 'students/js/tour.js',
             ),
             'output_filename': 'js/tour_js.min.js',
+        },
+        'sweetalert_js': {
+            'source_filenames': (
+                'raspied/bower_components/sweetalert/dist/sweetalert.min.js',
+            ),
+            'output_filename': 'js/sweetalert_js.min.js',
         },
         'home_js': {
             'source_filenames': (
