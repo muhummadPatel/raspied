@@ -20,9 +20,34 @@ var init_code_editors = function(){
   var custom_completer = {
     getCompletions: function(editor, session, pos, prefix, callback) {
       var word_data = {
-        "foolhardy": "foolhardy description",
-        "bar": "bar description",
-        "baz": "baz fn"
+        "Robot()":                   "Robot constructor",
+        "forward(x)":                "Move forward x blocks",
+        "reverse(x)":                "Reverse x blocks",
+        "left(x)":                   "Turn left x steps",
+        "right(x)":                  "Turn right x steps",
+        "stop()":                    "Stops the robot",
+        "follow_path(path)":         "Follow the given path x",
+        "pathfind([x, y])":          "Move robot to position x",
+        "get_position()":            "Get robot's current x,y co-ord",
+        "get_rotation()":            "Get robot's current rotation",
+        "add_obstacles(obs)":        "Add obstacles to grid",
+        "reset_obstacles()":         "Clear virtual obstacles",
+        "find_path(a, b)":           "Get path between a and b",
+        "get_start_pos()":           "Return the starting position",
+        "get_start_rot()":           "Return the starting rotation",
+        "print_grid()":              "Print the grid (showing obstacles)",
+        "camera.detect_colour()":    "Return colour of the current block",
+        "ir.detect_obstacle()":      "Detects if an obstacle is in front of Robot",
+        "ir.wait_for_obstacle()":    "Returns True when an obstacle is detected",
+        "led.red_on()":              "Turn on red LED",
+        "led.blue_on()":             "Turn on blue LED",
+        "led.yellow_on()":           "Turn on yellow LED",
+        "led.red_off()":             "Turn off red LED",
+        "led.blue_off()":            "Turn off blue LED",
+        "led.yellow_off()":          "Turn off yellow LED",
+        "led.red_flash()":           "Flash red LED",
+        "led.blue_flash()":          "Flash blue LED",
+        "led.yellow_flsah()":        "Flash yellow LED",
       };
 
       callback(null, Object.keys(word_data).map(function(word) {
