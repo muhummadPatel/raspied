@@ -24,7 +24,7 @@ var init_code_editors = function(){
         "bar": "bar description",
         "baz": "baz fn"
       };
-      
+
       callback(null, Object.keys(word_data).map(function(word) {
         return {
           caption: word,
@@ -75,10 +75,31 @@ var init_buttons = function(){
     var editor = ace.edit("editor");
     var user_script = editor.getValue();
 
-    var filename = prompt("Please enter the filename (with a .py extension):", "raspied_script.py");
+    // var filename = prompt("Please enter the filename (with a .py extension):", "raspied_script.py");
+    var filename = "raspied_script.py";
+    swal({
+      title: "Save as",
+      text: "Please enter the filename (with a .py extension)::",
+      type: "input",
+      showCancelButton: true,
+      closeOnConfirm: false,
+      animation: "slide-from-bottom",
+      inputPlaceholder: "raspied_script.py"
+    }, function(input){
+      if(input === false){
+        console.log("returning false");
+        return false;
+      }
+      if(input !== ""){
+        filename = input;
+      }
 
-    var blob = new Blob([user_script], {type: "text/plain;charset=utf-8"});
-    saveAs(blob, filename);
+      //TODO: decide between these 2 alternatives
+      // swal("Success!", "Your file will be saved as: " + input, "success");
+      var blob = new Blob([user_script], {type: "text/plain;charset=utf-8"});
+      saveAs(blob, filename);
+      swal.close();
+    });
   });
 
   $("#new-script-btn").click(function(){
@@ -131,7 +152,16 @@ var init_robot_terminal = function(){
             row: ace.edit("terminal-output").getSession().getLength(),
             column: 0
           }, data.message);
-          alert("Program ended, now resetting the robot"); //TODO: maybe use a toast?
+
+          //TODO: decide between these alternatives
+          // alert("Program ended, now resetting the robot");
+          // Materialize.toast("Program ended, now resetting the robot", 2000);
+          swal({
+            title: "Script complete!",
+            text: "Now resetting the robot",
+            timer: 2000,
+            showConfirmButton: true
+          });
       }else if(data.message){
         ace.edit("terminal-output").getSession().insert({
             row: ace.edit("terminal-output").getSession().getLength(),
