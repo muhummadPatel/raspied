@@ -54,8 +54,6 @@ class RobotTerminal(models.Model):
     def sanitize_code_lines(self, lines):
         out = []
         for i in range(len(lines)):
-            print lines[i]
-            print self.get_indent(lines[i])
             next_line = ''
             if i+1 < len(lines):
                 next_line = lines[i+1]
