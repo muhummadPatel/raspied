@@ -180,13 +180,13 @@ var init_robot_terminal = function(){
 
           //TODO: decide between these alternatives
           // alert("Program ended, now resetting the robot");
-          // Materialize.toast("Program ended, now resetting the robot", 2000);
-          swal({
-            title: "Script complete!",
-            text: "Now resetting the robot",
-            timer: 2000,
-            showConfirmButton: true
-          });
+          Materialize.toast("Program ended, now resetting the robot", 6000);
+          // swal({
+          //   title: "Script complete!",
+          //   text: "Now resetting the robot",
+          //   timer: 2000,
+          //   showConfirmButton: true
+          // });
       }else if(data.message){
         ace.edit("terminal-output").getSession().insert({
             row: ace.edit("terminal-output").getSession().getLength(),
