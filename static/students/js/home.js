@@ -15,9 +15,35 @@ var init_video_stream = function(){
 };
 
 var init_code_editors = function(){
+  var langTools = ace.require("ace/ext/language_tools");
+
+  var custom_completer = {
+    getCompletions: function(editor, session, pos, prefix, callback) {
+      var word_data = {
+        "foolhardy": "foolhardy description",
+        "bar": "bar description",
+        "baz": "baz fn"
+      };
+      
+      callback(null, Object.keys(word_data).map(function(word) {
+        return {
+          caption: word,
+          value: word,
+          meta: word_data[word]
+        };
+      }));
+    }
+  };
+
   var editor = ace.edit("editor");
   editor.setTheme("ace/theme/monokai");
   editor.getSession().setMode("ace/mode/python");
+  langTools.setCompleters([custom_completer]);
+  editor.setOptions({
+      enableBasicAutocompletion: true,
+      enableSnippets: true,
+      enableLiveAutocompletion: true
+  });
   editor.getSession().setTabSize(4);
   editor.getSession().setUseSoftTabs(true);
 
