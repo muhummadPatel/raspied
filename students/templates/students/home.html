@@ -3,21 +3,28 @@
 
 {% block extra_css_b %}
   {% stylesheet 'hopscotch_css' %}
-  
+  {% stylesheet 'sweetalert_css' %}
+
   {% stylesheet 'home_css' %}
 {% endblock extra_css_b %}
 
 {% block nav_ul_desktop_b %}
-  <li><a id="nav-home" href="#" class="current-page-nav">Home</li>
-  <li><a id="nav-booking" href="{% url 'students:booking' %}">Make a Booking</li>
+  <li><a id="take-tour-btn" class="waves-effect waves-light teal lighten-2 btn">Take the tour</a></li>
+  {% if user.is_staff %}
+    <li><a href="{% url 'admin:index' %}">Admin Site</a></li>
+  {% endif %}
+  <li><a id="nav-home" href="#" class="current-page-nav">Home</a></li>
+  <li><a id="nav-booking" href="{% url 'students:booking' %}">Make a Booking</a></li>
   <li><a id="nav-logout" href="{% url 'students:auth_logout' %}">Logout</a></li>
   <li> &nbsp;&#124;&nbsp; </li>
   <li><strong>{{ user.get_username }}</strong> </li>
 {% endblock nav_ul_desktop_b %}
 {% block nav_ul_mobile_b %}
-  <li><strong>{{ user.get_username }}</strong> </li>
-  <li><a href="#" class="current-page-nav">Home</li>
-  <li><a href="{% url 'students:booking' %}">Make a Booking</li>
+  {% if user.is_staff %}
+    <li><a href="{% url 'admin:index' %}">Admin Site</a></li>
+  {% endif %}
+  <li><a href="#" class="current-page-nav">Home</a></li>
+  <li><a href="{% url 'students:booking' %}">Make a Booking</a></li>
   <li><a href="{% url 'students:auth_logout' %}">Logout</a></li>
   <li><strong>{{ user.get_username }}</strong> </li>
 {% endblock nav_ul_mobile_b %}
@@ -30,12 +37,11 @@
           <li id="editor-tab-link" class="tab col s4"><a class="active" href="#editor-tab">Code editor</a></li>
           <li id="output-tab-link" class="tab col s4"><a href="#output-tab">Output</a></li>
         </ul>
-        <br>
 
         <div id="editor-tab" class="col s12">
           <div class="col s12 button-row">
             <div class="button-container">
-              <a id="run-script-btn" class="waves-effect waves-light btn orange disabled" href="javascript:void(0)">Run</a>
+              <a id="run-script-btn1" class="run-script-btn waves-effect waves-light btn orange disabled" href="javascript:void(0)">Run</a>
             </div>
             <div class="button-container">
               <a id="download-script-btn" class="waves-effect waves-light btn orange" href="javascript:void(0)">Save Script</a>
@@ -46,16 +52,29 @@
             <div class="button-container">
                 <a id="view-wiki-btn" class="waves-effect waves-light btn modal-trigger orange" href="https://github.com/Ruenzic/HonoursProject/wiki" target="_blank">RASPIED Wiki</a>
             </div>
+            <div class="button-container">
+                <a id="new-script-btn" class="waves-effect waves-light btn orange" href="javascript:void(0)">New Script</a>
+            </div>
           </div>
 
-          <div id="editor" class="col s12">{% if user_script %}{{user_script}}{% else %}Your code here...{% endif %}</div>
+          <div id="editor" class="col s12"></div>
         </div>
 
         <div id="output-tab" class="col s12">
-          <div class="col s12 center">
+          <div class="col s6 center">
             <p id="video-help">
               Viewing live video stream of robot
             </p>
+          </div>
+          <div class="col s6 button-row">
+            <div class="button-container">
+              <a id="run-script-btn2" class="run-script-btn waves-effect waves-light btn orange disabled" href="javascript:void(0)">Run</a>
+            </div>
+            <div class="button-container">
+              <a id="kill-script-btn" class="kill-script-btn waves-effect waves-light btn orange disabled" href="javascript:void(0)">Stop Script</a>
+            </div>
+          </div>
+          <div class="col s12 center">
             <canvas id="videoCanvas" width="640" height="480">
               <p>
                 Please use a browser that supports the Canvas Element, like
@@ -80,7 +99,7 @@
 
   <!-- File upload modal -->
   <div id="file-upload-modal" class="modal">
-    <form action="." method="post" enctype="multipart/form-data">
+    <form id="file-upload-form" action="" method="post" enctype="multipart/form-data">
       {% csrf_token %}
 
     <div class="modal-content">
@@ -92,7 +111,7 @@
       <div class="file-field input-field">
         <div class="btn">
           <span>Choose File</span>
-          <input type="file" name="uploaded_file" accept=".py">
+          <input id="file-input" type="file" name="uploaded_file" accept=".py" enctype="multipart/form-data">
         </div>
         <div class="file-path-wrapper">
           <input class="file-path validate" type="text">
@@ -105,10 +124,11 @@
     </div>
     </form>
   </div>
+
+  <p id="boilerplate-data" style="display:none">{% include 'students/boilerplate.html' %}</p>
 {% endblock main_body_b %}
 
 {% block extra_footer_b %}
-  <a id="take-tour-btn" class="waves-effect waves-light orange btn">Take the tour</a>
 {% endblock extra_footer_b %}
 
 {% block extra_js_b %}
@@ -117,11 +137,15 @@
   {% javascript 'filesaver_js' %}
   {% javascript 'reconnectingwebsocket_js' %}
   {% javascript 'hopscotch_js' %}
+  {% javascript 'sweetalert_js' %}
 
   <script type="text/javascript">
-    //initialise global streaming_server_ip var for use in home_js. We need to keep this here to
-    //capture the value from the context provided to the template.
+    //initialise global vars for use in other included custom js files. We need to
+    //keep these here to capture the values from the context provided to the template.
+
+    var username = "{{user.username}}";
     var streaming_server_ip = "{{streaming_server_ip}}";
+    var is_first_login = {% if is_first_login %}true{% else %}false{% endif %};
   </script>
   {% javascript 'home_js' %}
   {% javascript 'tour_js' %}

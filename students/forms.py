@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import AuthenticationForm
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.utils.translation import ugettext_lazy as _
 
@@ -10,7 +11,17 @@ from .models import WhitelistedUsername
 User = get_user_model()
 
 
+class CustomAuthenticationForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super(CustomAuthenticationForm, self).__init__(*args, **kwargs)
+        self.fields['username'].label = 'Student number'
+
+
 class ExclusiveRegistrationForm(RegistrationForm):
+    def __init__(self, *args, **kwargs):
+        super(ExclusiveRegistrationForm, self).__init__(*args, **kwargs)
+        self.fields['username'].label = 'Student number'
+
     def clean(self):
         # TODO: try catch KeyError here to avoid empty form error
         form_username = self.cleaned_data['username']

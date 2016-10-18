@@ -44,11 +44,73 @@ class RobotTerminal(models.Model):
         # The group that channels need to subscribe to for messages
         return Group('robot-%s' % self.id)
 
+    def get_indent(self, s):
+        for i in range(len(s)):
+            if s[i] != " ":
+                return i
+
+        return 0
+
+    def sanitize_code_lines(self, lines):
+        out = []
+        for i in range(len(lines)):
+            next_line = ''
+            if i+1 < len(lines):
+                next_line = lines[i+1]
+
+            if lines[i].startswith('#'):
+                pass
+            elif lines[i].strip():
+                out.append(lines[i])
+
+            if self.get_indent(next_line) == 0 and self.get_indent(next_line) < self.get_indent(lines[i]):
+                # we have left an indented block, so send a newline
+                out.append('\n')
+
+        return out
+
+    def send_halt(self):
+        try:
+            output_message = 'Attempting to kill the code...\n'
+            fb = {'robot': str(self.id), 'message': output_message}
+            self.websocket_group.send(
+                {'text': json.dumps(fb)}
+            )
+            ssh = pxssh.pxssh()
+            hostname = getattr(settings, 'ROBOT_HOSTNAME')
+            username = getattr(settings, 'ROBOT_USERNAME')
+            password = getattr(settings, 'ROBOT_PWD')
+            ssh.login(hostname, username, password)
+
+            ssh.sendline("kill `ps -ef | awk '/[p]ython/{print $2}'`")
+            ssh.prompt()
+
+            ssh.sendline("cd HonoursProject")
+            ssh.prompt()
+
+            ssh.sendline("python recover.py")
+            ssh.prompt()
+
+            output_message = 'Code Halted\nDONE\n'
+            fb = {'robot': str(self.id), 'message': output_message}
+            self.websocket_group.send(
+                {'text': json.dumps(fb)}
+            )
+
+            ssh.logout()
+        except pxssh.ExceptionPxssh as e:
+            output_message = 'Could not connect to the robot.\nDONE\n'
+            fb = {'robot': str(self.id), 'message': output_message}
+            self.websocket_group.send(
+                {'text': json.dumps(fb)}
+            )
+            print(e)
+
     def send_command(self, command, user):
         lines = StringIO(command).readlines()
         lines[-1] += '\n'
-        lines += ['\n\n\n', 'print ""\n']
-        lines = [l for l in lines if not l.startswith('#')]
+        lines += ['\n\n\n']
+        lines = self.sanitize_code_lines(lines)
 
         cleanup_lines = getattr(settings, 'CLEANUP_CODE')
 
@@ -80,6 +142,13 @@ class RobotTerminal(models.Model):
                     {'text': json.dumps(fb)}
                 )
 
+            # NOTE: the code is as yet untested!!!
+            output_message = 'Code execution complete. Now resetting the robot...'
+            fb = {'robot': str(self.id), 'message': output_message, 'code_done': True}
+            self.websocket_group.send(
+                {'text': json.dumps(fb)}
+            )
+
             for line in cleanup_lines:
                 ssh.send(line)
                 ssh.prompt()
@@ -95,7 +164,11 @@ class RobotTerminal(models.Model):
 
             ssh.logout()
         except pxssh.ExceptionPxssh as e:
-            output_message = 'Could not connect to the robot.\n'
+            output_message = 'Could not connect to the robot.\nDONE\n'
+            fb = {'robot': str(self.id), 'message': output_message}
+            self.websocket_group.send(
+                {'text': json.dumps(fb)}
+            )
             print(e)
 
         final_msg = {'robot': str(self.id), 'message': output_message}

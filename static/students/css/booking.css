@@ -15,6 +15,10 @@ li.collection-item.avatar p.subtext {
   color: darkgrey;
 }
 
+li.current-booking {
+  background-color: rgba(226, 28, 28, 0.08)   !important;
+}
+
 hr.header-sep {
   height: 0;
   border: 0;

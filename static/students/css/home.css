@@ -9,7 +9,12 @@
 #video-help {
   margin-top: 0;
   margin-bottom: 0.5rem;
+  padding-top: 1rem;
   color: lightgrey;
+}
+
+#robot-help {
+  text-align: center;
 }
 
 #editor {
@@ -25,8 +30,9 @@ div.button-row {
 }
 
 div.button-row div.button-container {
-  padding-left: 1rem     !important;
-  padding-right: 1rem  !important;
+  padding-top: 0.5rem   !important;
+  padding-left: 1rem    !important;
+  padding-right: 1rem   !important;
   float: right;
 }
 

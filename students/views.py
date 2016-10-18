@@ -3,6 +3,7 @@ from dateutil import parser as timestring_parser
 from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model, login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import login as default_login_view
 from django.core import serializers
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
@@ -11,7 +12,7 @@ from django.views.decorators.http import require_http_methods
 from registration import signals
 from registration.backends.simple.views import RegistrationView
 
-from .forms import ExclusiveRegistrationForm
+from .forms import CustomAuthenticationForm, ExclusiveRegistrationForm
 from .models import Booking, RobotTerminal
 from .utils import get_booked_robot
 
@@ -22,28 +23,30 @@ User = get_user_model()
 class ExclusiveRegistrationView(RegistrationView):
     form_class = ExclusiveRegistrationForm
 
+    def get_success_url(self, user):
+        self.request.session['is_first_login'] = True
+        return 'students:home'
+
+
+def custom_login(request):
+    return default_login_view(request, authentication_form=CustomAuthenticationForm)
+
 
 @login_required
-@require_http_methods(['GET', 'POST'])
+@require_http_methods(['GET'])
 def home(request):
     context = {}
-    if request.method == 'GET':
-        robot = get_booked_robot(request.user)
-        if robot:
-            context['robot'] = robot
+    context['streaming_server_ip'] = getattr(settings, 'STREAMING_SERVER_IP')
 
-        context['streaming_server_ip'] = getattr(settings, 'STREAMING_SERVER_IP')
-        return render(request, 'students/home.html', context)
+    if 'is_first_login' in request.session:
+        context['is_first_login'] = request.session['is_first_login']
+        del request.session['is_first_login']
 
-    elif request.method == 'POST':
-        if 'uploaded_file' not in request.FILES:
-            context['user_script'] = 'Could not upload file'
-            return render(request, 'students/home.html', context)
+    robot = get_booked_robot(request.user)
+    if robot:
+        context['robot'] = robot
 
-        contents = request.FILES['uploaded_file'].read()
-        context['user_script'] = contents
-
-        return render(request, 'students/home.html', context)
+    return render(request, 'students/home.html', context)
 
 
 @login_required
@@ -95,7 +98,7 @@ def booking(request):
 @require_http_methods(['GET'])
 def booking_list(request):
     today = datetime.now()
-    today.replace(minute=0, second=0, microsecond=0)
+    today = today.replace(minute=0, second=0, microsecond=0)
 
     # get all the user bookings from this hour onwards
     user_bookings = Booking.objects.filter(user=request.user, start_time__gte=today).order_by('start_time')

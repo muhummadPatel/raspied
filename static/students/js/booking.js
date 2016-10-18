@@ -1,6 +1,7 @@
 var timepicker;
+var datepicker;
 var init_booking_form = function(){
-  $('.datepicker').pickadate({
+  datepicker = $(".datepicker").pickadate({
     onSet: function(){
       update_disabled_timeslots();
       update_booking_form();
@@ -8,7 +9,7 @@ var init_booking_form = function(){
     min: true
   });
 
-  timepicker = $('.timepicker').pickatime({
+  timepicker = $(".timepicker").pickatime({
     onSet: update_booking_form,
     interval: 60,
     format: "HH:i"
@@ -28,6 +29,9 @@ var init_booking_form = function(){
 
       update_booking_list();
       update_disabled_timeslots();
+
+      timepicker.pickatime("picker").clear();
+      datepicker.pickadate("picker").clear();
     }).fail(function(response){
       Materialize.toast("Sorry, failed! " + response.responseText, 4000);
     });
@@ -94,11 +98,16 @@ var update_booking_list = function(){
         booking_id = booking.pk;
         date = moment(booking.fields.start_time).format("Do MMM YYYY");
 
-        start_time = moment(booking.fields.start_time).format("HH:mm");
+        current_time = moment();
+        start_time = moment(booking.fields.start_time);
+        is_current = start_time.isBefore(current_time)? "current-booking": "";
+        delete_icon = start_time.isBefore(current_time)? "": "<a id=\"delete-booking_" + booking_id + "\" href=\"#\" class=\"secondary-content\"><i class=\"material-icons md-18\">delete</i></a>";
+
+        start_time = start_time.format("HH:mm");
         end_time = moment(booking.fields.end_time).format("HH:mm");
         booking_info = start_time + " - " + end_time;
 
-        list_item_html = "<li class=\"collection-item avatar\"><div><span class=\"title\">" + date + "</span><p id=\"booking_" + booking_id + "\" class=\"subtext\">" + booking_info + "</p><a id=\"delete-booking_" + booking_id + "\" href=\"#\" class=\"secondary-content\"><i class=\"material-icons md-18\">delete</i></a><div></li>";
+        list_item_html = "<li class=\"collection-item avatar "+ is_current +" \"><div><span class=\"title\">" + date + "</span><p id=\"booking_" + booking_id + "\" class=\"subtext\">" + booking_info + "</p>" + delete_icon + "<div></li>";
         $("#user-bookings-list").append(list_item_html);
       });
     }

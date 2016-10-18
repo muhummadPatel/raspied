@@ -178,6 +178,12 @@ PIPELINE = {
             ),
             'output_filename': 'css/hopscotch_css.min.css',
         },
+        'sweetalert_css': {
+            'source_filenames': (
+                'raspied/bower_components/sweetalert/dist/sweetalert.css',
+            ),
+            'output_filename': 'css/sweetalert_csss.min.css',
+        },
         'home_css': {
             'source_filenames': (
               'students/css/home.css',
@@ -217,6 +223,7 @@ PIPELINE = {
                 'raspied/bower_components/ace-builds/src-noconflict/ace.js',
                 'raspied/bower_components/ace-builds/src-noconflict/mode-python.js',
                 'raspied/bower_components/ace-builds/src-noconflict/theme-monokai.js',
+                'raspied/bower_components/ace-builds/src-noconflict/ext-language_tools.js',
             ),
             'output_filename': 'js/ace_js.min.js',
         },
@@ -260,6 +267,12 @@ PIPELINE = {
             ),
             'output_filename': 'js/tour_js.min.js',
         },
+        'sweetalert_js': {
+            'source_filenames': (
+                'raspied/bower_components/sweetalert/dist/sweetalert.min.js',
+            ),
+            'output_filename': 'js/sweetalert_js.min.js',
+        },
         'home_js': {
             'source_filenames': (
                 'students/js/home.js',
@@ -271,6 +284,12 @@ PIPELINE = {
                 'students/js/booking.js',
             ),
             'output_filename': 'js/booking_js.min.js',
+        },
+        'registration_form_js': {
+            'source_filenames': (
+                'registration/js/registration_form.js',
+            ),
+            'output_filename': 'js/registration_form_js.min.js',
         },
     },
 }

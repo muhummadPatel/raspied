@@ -28,6 +28,12 @@ $(function(){
         placement: "top"
       },
       {
+        title: "Start a new script",
+        content: "This will reset the code editor to it's original state and clear any changes you have made. Be sure to save your changes before starting a new script!",
+        target: document.querySelector("#new-script-btn"),
+        placement: "bottom"
+      },
+      {
         title: "View the docs",
         content: "This will open the docs for the RASPIED robot in a new tab. The docs contain tutorials, FAQ's, and comprehensive documentation of the RASPIED robot library.",
         target: document.querySelector("#view-wiki-btn"),
@@ -48,7 +54,7 @@ $(function(){
       {
         title: "Run your script!",
         content: "Clicking this button will upload the script in the code editor to the robot and run it. Note that this button will only be enabled if you have the current booking to use the robot.",
-        target: document.querySelector("#run-script-btn"),
+        target: document.querySelector("#run-script-btn1"),
         placement: "bottom",
         onNext: function(){
           $("ul.tabs").tabs("select_tab", "output-tab");
@@ -67,12 +73,12 @@ $(function(){
         xOffset: "center",
         placement: "bottom"
       },
-      {
-        title: "Code output",
-        content: "Any output from code that you run on the robot will be shown here.",
-        target: document.querySelector("#terminal-output"),
-        placement: "top"
-      },
+      // {
+      //   title: "Code output",
+      //   content: "Any output from code that you run on the robot will be shown here.",
+      //   target: document.querySelector("#terminal-output"),
+      //   placement: "top"
+      // },
       {
         title: "Before you jump right in...",
         content: "You need to make a booking in order to upload code to the robot. You are allowed to make up to 5 bookings per month and each booking lasts for 1 hour.",
@@ -114,6 +120,10 @@ $(function(){
     $("#take-tour-btn").click(function(){
       hopscotch.startTour(tour);
     });
+
+    if(is_first_login === true){
+      hopscotch.startTour(tour);
+    }
   }else if(window.location.href.includes("booking")){
     if (hopscotch.getState() === "raspied-tour:12") {
       hopscotch.startTour(tour);

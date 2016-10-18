@@ -12,6 +12,7 @@
     "moment": "^2.14.1",
     "reconnectingWebsocket": "^1.0.0",
     "jsmpeg": "jsmpg#*",
-    "hopscotch": "^0.2.6"
+    "hopscotch": "^0.2.6",
+    "sweetalert": "^1.1.3"
   }
 }

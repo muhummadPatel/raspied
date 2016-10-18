@@ -9,17 +9,16 @@
 {% endblock extra_css_b %}
 
 {% block nav_ul_desktop_b %}
-  <li><a id="nav-home" href="{% url 'students:home' %}">Home</li>
-  <li><a id="nav-booking" href="#" class="current-page-nav">Make a Booking</li>
+  <li><a id="nav-home" href="{% url 'students:home' %}">Home</a></li>
+  <li><a id="nav-booking" href="#" class="current-page-nav">Make a Booking</a></li>
   <li><a id="nav-logout" href="{% url 'students:auth_logout' %}">Logout</a></li>
   <li> &nbsp;&#124;&nbsp; </li>
   <li><strong>{{ user.get_username }}</strong> </li>
 {% endblock nav_ul_desktop_b %}
 {% block nav_ul_mobile_b %}
-  <li><a href="{% url 'students:home' %}">Home</li>
-  <li><a href="#" class="current-page-nav">Make a Booking</li>
+  <li><a href="{% url 'students:home' %}">Home</a></li>
+  <li><a href="#" class="current-page-nav">Make a Booking</a></li>
   <li><a href="{% url 'students:auth_logout' %}">Logout</a></li>
-  <li><strong>{{ user.get_username }}</strong> </li>
 {% endblock nav_ul_mobile_b %}
 
 {% block main_body_b %}
