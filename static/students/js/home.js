@@ -21,10 +21,10 @@ var init_code_editors = function(){
     getCompletions: function(editor, session, pos, prefix, callback) {
       var word_data = {
         "Robot()":                   "Robot constructor",
-        "forward(x)":                "Move forward x blocks",
-        "reverse(x)":                "Reverse x blocks",
-        "left(x)":                   "Turn left x steps",
-        "right(x)":                  "Turn right x steps",
+        "forward()":                "Move forward x blocks",
+        "reverse()":                "Reverse x blocks",
+        "left()":                   "Turn left x steps",
+        "right()":                  "Turn right x steps",
         "stop()":                    "Stops the robot",
         "follow_path(path)":         "Follow the given path x",
         "pathfind([x, y])":          "Move robot to position x",
