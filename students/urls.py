@@ -12,7 +12,6 @@ urlpatterns = [
     url(r'^booking/listall/(?P<booking_date>\d{2}\.{1}[a-zA-Z]+\.{1}\d{4})/$', views.booking_listall,
         name='listall_booking'),
     url(r'^booking/(?P<booking_id>[\d]+)/delete/$', views.booking_delete, name='delete_booking'),
-    # TODO: overidden registration urls come before the include below
     url(r'^accounts/login/$', views.custom_login, name='registration_login'),
     url(r'^accounts/register/$', views.ExclusiveRegistrationView.as_view(), name='registration_register'),
     url(r'^accounts/', include('registration.backends.simple.urls')),

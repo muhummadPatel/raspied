@@ -1,3 +1,11 @@
+/* tour.js
+ *
+ * Used in both the home page and the bookings page to add the site tour
+ * functionality. The site tour is started automatically on a user's first login
+ * or if the tour is already running. This script also sets up the take tour
+ * button to launch the tour when clicked.
+ */
+
 $(function(){
   var tour = {
     id: "raspied-tour",

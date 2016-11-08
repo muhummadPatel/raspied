@@ -11,7 +11,7 @@ websocket_routing = [
 ]
 
 
-# Yrouting for the robot terminal consumers
+# Routing for the robot terminal consumers
 robot_terminal_routing = [
     route('robot.receive', robot_terminal_join, command='^join$'),
     route('robot.receive', robot_terminal_leave, command='^leave$'),

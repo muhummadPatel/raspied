@@ -7,6 +7,11 @@ from .models import Booking, RobotTerminal, WhitelistedUsername
 
 @admin.register(WhitelistedUsername)
 class WhitelistedUsernameAdmin(admin.ModelAdmin):
+    """
+    Admin class for the WhitelistedUsername model. Handles batch uploading of
+    usernames via a text file.
+    """
+
     def get_urls(self):
         urls = super(WhitelistedUsernameAdmin, self).get_urls()
         my_urls = [
@@ -29,7 +34,6 @@ class WhitelistedUsernameAdmin(admin.ModelAdmin):
             return TemplateResponse(request, 'students/add_whitelisted_usernames.html', context)
 
         elif request.method == 'POST':
-            # TODO: Use a form to validate this input
             if 'uploaded_file' not in request.FILES:
                 context['form_message'] = 'Please upload a file of usernames to be whitelisted.'
                 return TemplateResponse(request, 'students/add_whitelisted_usernames.html', context)
@@ -38,7 +42,6 @@ class WhitelistedUsernameAdmin(admin.ModelAdmin):
             cleaned_names = [name.strip().lower() for name in whitelist.readlines()]
 
             for name in cleaned_names:
-                # NOTE: If this is slowing things down, look into bulk_create method
                 temp = WhitelistedUsername(username=name)
                 temp.save()
 
@@ -46,9 +49,11 @@ class WhitelistedUsernameAdmin(admin.ModelAdmin):
             return TemplateResponse(request, 'students/add_whitelisted_usernames.html', context)
 
 
+# manage bookings via the admin interface
 admin.site.register(Booking)
 
 
+# manage Robot Terminals via the admin interface
 admin.site.register(
     RobotTerminal,
     list_display=['id', 'title'],

@@ -297,20 +297,17 @@ PIPELINE = {
 LOGIN_URL = '/students/accounts/login/'
 LOGIN_REDIRECT_URL = '/students/home/'
 
+# The adress of the video streaming server to be sent to the client
 STREAMING_SERVER_IP = secrets.STREAMING_SERVER_IP
 
-# Duration of a bookable session in seconds
+# Duration of a bookable session in seconds (currently set to 1 hour)
 BOOKING_INTERVAL = 3600
 USER_BOOKINGS_PER_MONTH = 5
 
 ROBOT_HOSTNAME = secrets.ROBOT_HOSTNAME
 ROBOT_USERNAME = secrets.ROBOT_USERNAME
 ROBOT_PWD = secrets.ROBOT_PWD
-# CLEANUP_CODE = (
-#     'from Robot import *\n',
-#     'r = Robot()\n',
-#     'r.reset()\n'
-# )
+# code to be appended to users' scripts to reset the robot
 CLEANUP_CODE = (
     '\n\n',
     'from Robot import *\n',

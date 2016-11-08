@@ -1,5 +1,15 @@
+/* home.js
+ *
+ * Handles interactions on the home page and sets up the code editor and
+ * websocket connections to the robot terminal and video stream.
+ */
+
+// Sets up the connection to the live video stream server using the streaming
+// server address sent to the template by django.
 var init_video_stream = function(){
   // Setup the WebSocket connection and start the player
+  // NOTE: streaming server ip is inserted into the homa page template when it is
+  // rendered on the server side
   var client = new WebSocket("ws://" + streaming_server_ip + ":8084/");
 
   client.onclose = function(){
@@ -14,7 +24,9 @@ var init_video_stream = function(){
   var player = new jsmpeg(client, {canvas: canvas});
 };
 
+// Sets up the code editor and the output terminal ace editors
 var init_code_editors = function(){
+  // set up the custom autocompletion for the Robot API functions
   var langTools = ace.require("ace/ext/language_tools");
 
   var custom_completer = {
@@ -61,6 +73,7 @@ var init_code_editors = function(){
     }
   };
 
+  // set up the python code editor
   var editor = ace.edit("editor");
   editor.setTheme("ace/theme/monokai");
   editor.getSession().setMode("ace/mode/python");
@@ -73,6 +86,7 @@ var init_code_editors = function(){
   editor.getSession().setTabSize(4);
   editor.getSession().setUseSoftTabs(true);
 
+  // set up the output terminal
   if($("#terminal-output").length > 0){
     var terminal_output = ace.edit("terminal-output");
     terminal_output.setTheme("ace/theme/monokai");
@@ -83,7 +97,8 @@ var init_code_editors = function(){
     terminal_output.getSession().setUseSoftTabs(true);
   }
 
-
+  // populate the code editor with the cached user script (if it exists), or the
+  // default boilerplate code.
   var cached_user_script = localStorage.getItem("cached_user_script_" + username);
   if(cached_user_script){
     editor.setValue(cached_user_script);
@@ -96,12 +111,13 @@ var init_code_editors = function(){
   }
 };
 
+// initialise the row of buttons above the editor and attach the required
+// event listeners/handlers.
 var init_buttons = function(){
   $("#download-script-btn").click(function(){
     var editor = ace.edit("editor");
     var user_script = editor.getValue();
 
-    // var filename = prompt("Please enter the filename (with a .py extension):", "raspied_script.py");
     var filename = "raspied_script.py";
     swal({
       title: "Save as",
@@ -120,8 +136,6 @@ var init_buttons = function(){
         filename = input;
       }
 
-      //TODO: decide between these 2 alternatives
-      // swal("Success!", "Your file will be saved as: " + input, "success");
       var blob = new Blob([user_script], {type: "text/plain;charset=utf-8"});
       saveAs(blob, filename);
       swal.close();
@@ -147,6 +161,8 @@ var init_buttons = function(){
   });
 };
 
+// Opens a websocket connection to the robot terminal and sets up handlers to
+// help display data received over this websocket conenction.
 var init_robot_terminal = function(){
   if($("#terminal-output").length < 1){
     $("#robot-help").show();
@@ -179,15 +195,8 @@ var init_robot_terminal = function(){
             column: 0
           }, data.message);
 
-          //TODO: decide between these alternatives
-          // alert("Program ended, now resetting the robot");
+
           Materialize.toast("Program ended, now resetting the robot", 6000);
-          // swal({
-          //   title: "Script complete!",
-          //   text: "Now resetting the robot",
-          //   timer: 2000,
-          //   showConfirmButton: true
-          // });
       }else if(data.message){
         ace.edit("terminal-output").getSession().insert({
             row: ace.edit("terminal-output").getSession().getLength(),
@@ -242,18 +251,22 @@ var init_robot_terminal = function(){
   }
 };
 
+// store the current contents of the code editor in localstorage so the user
+// doesn't lose their work if they refresh the page or logout.
 var cache_script = function(){
   var editor = ace.edit("editor");
   var user_script = editor.getValue();
   localStorage.setItem("cached_user_script_" + username, user_script);
 };
 
+// cahches the user script after every interval of millis.
 var schedule_user_script_caching = function(millis){
   window.setInterval(function(){
     cache_script();
   }, millis);
 };
 
+// Run the required setup functions once the document has completed rendering.
 $(function(){
   init_video_stream();
   init_code_editors();

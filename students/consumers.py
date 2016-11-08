@@ -1,3 +1,8 @@
+"""
+Handle WebSocket connections coming in through Django channels. These consumer methods
+handle connections, disconnections, and robot interacrion requests.
+
+"""
 import json
 from channels import Channel
 from channels.auth import channel_session_user_from_http, channel_session_user
@@ -5,9 +10,6 @@ from channels.auth import channel_session_user_from_http, channel_session_user
 from .models import RobotTerminal
 from .utils import get_robot_terminal_or_error
 from .exceptions import ClientError
-
-
-# TODO: Add login required to all of these consumer methods?
 
 
 @channel_session_user_from_http
@@ -33,6 +35,9 @@ def ws_disconnect(message):
 
 @channel_session_user
 def robot_terminal_join(message):
+    """
+    Add a user to the RobotTerminal so they receive the output from the robot.
+    """
     try:
         robot = get_robot_terminal_or_error(message['robot'], message.user)
 
@@ -53,6 +58,9 @@ def robot_terminal_join(message):
 
 @channel_session_user
 def robot_terminal_leave(message):
+    """
+    Remove a user from the RobotTerminal so they no longer receive the output from the robot.
+    """
     try:
         # Reverse of join - remove them from everything.
         robot = get_robot_terminal_or_error(message['robot'], message.user)
@@ -72,6 +80,9 @@ def robot_terminal_leave(message):
 
 @channel_session_user
 def robot_terminal_send(message):
+    """
+    Run a script on the robot.
+    """
     try:
         # the user must be have joined the robot terminal in order to send a message
         if int(message['robot']) not in message.channel_session['robot']:
@@ -86,6 +97,9 @@ def robot_terminal_send(message):
 
 @channel_session_user
 def robot_terminal_kill(message):
+    """
+    Ask the robot to halt the currently executing script.
+    """
     try:
         # the user must be have joined the robot terminal in order to kill the script
         if int(message['robot']) not in message.channel_session['robot']:
