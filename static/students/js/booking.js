@@ -1,6 +1,15 @@
+/* booking.js
+ *
+ * Handles interactions on the bookings page including async booking actions.
+ */
+
 var timepicker;
 var datepicker;
+
+// Initilaise the time and date pickers including disabling clots that have already
+// been booked.
 var init_booking_form = function(){
+  // initialise the time and date picker components
   datepicker = $(".datepicker").pickadate({
     onSet: function(){
       update_disabled_timeslots();
@@ -15,6 +24,7 @@ var init_booking_form = function(){
     format: "HH:i"
   });
 
+  // Settup the booking form to clean up the data and post the booking requests
   $("#new-booking-form").on('submit', function(event){
     event.preventDefault();
 
@@ -40,7 +50,9 @@ var init_booking_form = function(){
   update_booking_form();
 };
 
+// Disables all the booked timeslots for the currently selected date
 var update_disabled_timeslots = function(){
+  // read the currently selected date
   var date = $("#new-booking-date").val();
   date = moment(new Date(date)).format("DD.MMMM.YYYY");
 
@@ -48,6 +60,8 @@ var update_disabled_timeslots = function(){
     return;
   }
 
+  // get all the booked timeslots for the currently selected date adn disable them
+  // in the time picker
   $.getJSON("/students/booking/listall/" + date + "/", function(bookings){
     if(bookings.length > 0){
       var booked_slots = [];
@@ -69,11 +83,14 @@ var update_disabled_timeslots = function(){
   });
 };
 
+// set up the list of user bookings
 var init_booking_list = function(){
   update_booking_list();
   $("#user-bookings-list").on("click", ".secondary-content", delete_booking);
 };
 
+// update the booking form to enable/disable the submit button based on whether
+// the date and time inputs have been populated
 var update_booking_form = function(){
   var date = $("#new-booking-date").val();
   var time = $("#new-booking-time").val();
@@ -86,6 +103,8 @@ var update_booking_form = function(){
   }
 };
 
+// async update of the list of user bookings. Used after any booking additions
+// and deletions to update the list of bookings.
 var update_booking_list = function(){
   $("#user-bookings-list").empty();
 
@@ -116,6 +135,7 @@ var update_booking_list = function(){
   });
 };
 
+// deletes the required booking
 var delete_booking = function(event){
   event.preventDefault();
 
@@ -138,6 +158,8 @@ var delete_booking = function(event){
   });
 };
 
+// initialises the booking form and the list of bookings when the page has
+// completed loading
 $(function(){
   init_booking_form();
   init_booking_list();
