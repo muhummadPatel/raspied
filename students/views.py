@@ -21,6 +21,10 @@ User = get_user_model()
 
 
 class ExclusiveRegistrationView(RegistrationView):
+    """
+    Extended RegistrationView to use the custom ExclusiveRegistrationForm and
+    set the success redirect to the home page rather than the index page.
+    """
     form_class = ExclusiveRegistrationForm
 
     def get_success_url(self, user):
@@ -29,12 +33,20 @@ class ExclusiveRegistrationView(RegistrationView):
 
 
 def custom_login(request):
+    """
+    Custom login view to use the CustomAuthenticationForm rather that the default.
+    """
     return default_login_view(request, authentication_form=CustomAuthenticationForm)
 
 
 @login_required
 @require_http_methods(['GET'])
 def home(request):
+    """
+    Render and return the home page. Send the video streaming server address as
+    part of the context. Also, tell the template whether or not this is the user's
+    first time logging in (so it knows whether to automatically start the tour).
+    """
     context = {}
     context['streaming_server_ip'] = getattr(settings, 'STREAMING_SERVER_IP')
 
@@ -52,16 +64,22 @@ def home(request):
 @login_required
 @require_http_methods(['GET', 'POST'])
 def booking(request):
+    """
+    Render and return the booking form. Also handle booking requests (POST) with
+    all associated validations.
+    """
     context = {}
     if request.method == 'GET':
         return render(request, 'students/booking.html', context)
     if request.method == 'POST':
+        # figure out what date and time the user is trying to book
         try:
             timestring = request.POST['datetime_str']
             parsed_timestring = timestring_parser.parse(timestring)
         except (ValueError, OverflowError) as e:
             return HttpResponse('Unable to parse date', status=400)
 
+        # figure out the start and end time of the requested booking
         user = request.user
         start_time = parsed_timestring
         end_time = start_time + timedelta(seconds=getattr(settings, 'BOOKING_INTERVAL', 3600) - 1)
@@ -69,7 +87,7 @@ def booking(request):
         try:
             new_booking = Booking(user=user, start_time=start_time, end_time=end_time)
 
-            # Checking for overlap
+            # Checking for overlap/clashes
             day_bookings = Booking.objects.filter(
                             start_time__year=start_time.year,
                             start_time__month=start_time.month,
@@ -79,7 +97,7 @@ def booking(request):
                 if (new_booking.start_time <= booking.end_time) and (new_booking.end_time >= booking.start_time):
                     return HttpResponse('Booking already taken', status=400)
 
-            # Checking for too many bookings in this month
+            # Checking for too many bookings in this month (number of bookings must not exceed the defined quota)
             today = datetime.now()
             num_user_bookings = Booking.objects.filter(user=user, start_time__month=today.month).count()
             allowed_bookings_pm = getattr(settings, 'USER_BOOKINGS_PER_MONTH', 5)
@@ -97,6 +115,9 @@ def booking(request):
 @login_required
 @require_http_methods(['GET'])
 def booking_list(request):
+    """
+    Return all future bookings owned by the requesting user.
+    """
     today = datetime.now()
     today = today.replace(minute=0, second=0, microsecond=0)
 
@@ -110,6 +131,10 @@ def booking_list(request):
 @login_required
 @require_http_methods(['GET'])
 def booking_listall(request, booking_date):
+    """
+    Return all the bookings for the given booking_date (used to disable times in
+    the booking form on the client side)
+    """
     booking_date = timestring_parser.parse(booking_date)
 
     bookings = Booking.objects.filter(
@@ -124,7 +149,11 @@ def booking_listall(request, booking_date):
 @login_required
 @require_http_methods(['POST'])
 def booking_delete(request, booking_id):
-    print 'received POST to delete %s' % (booking_id)
+    """
+    Delete the booking with the specified booking_id. Will only work if
+    the booking is owned by the requesting user (You cannot delete someone elses
+    bookings).
+    """
 
     # get the booking to be deleted and make sure that it exists, is owned by the requesting user, and is in the future
     curr_time = datetime.now()
