@@ -5,6 +5,10 @@ from .models import Booking, RobotTerminal
 
 
 def get_robot_terminal_or_error(robot_id, user):
+    """
+    Returns the robot terminal for the given robot_id if it exists and the user
+    has the curent booking for it.
+    """
     # Check if the user is logged in
     if not user.is_authenticated():
         raise ClientError('USER_HAS_TO_LOGIN')
@@ -25,6 +29,10 @@ def get_robot_terminal_or_error(robot_id, user):
 
 
 def get_booked_robot(user):
+    """
+    Returns the robot terminal of the robot that the given user currently has
+    booked, otherwise returns None.
+    """
     now = datetime.now()
     has_booking = len(Booking.objects.filter(user=user, start_time__lte=now, end_time__gte=now)) > 0
 
