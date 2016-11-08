@@ -1,3 +1,10 @@
+/* init.js
+ *
+ * Javascript common to all pages. This will be included in the base page template.
+ * Control interaction with the menus, modals, etc. Also sets up the required
+ */
+
+
 // collapse navbar to drawer on mobile
 (function($){
   $(function(){
