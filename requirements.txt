@@ -3,7 +3,7 @@ asgiref==0.14.0
 autobahn==0.16.0
 channels==0.17.2
 daphne==0.15.0
-Django==1.9.7
+Django==1.11.29
 django-pipeline==1.6.8
 django-registration==2.1.2
 gunicorn==19.6.0
